@@ -7,6 +7,10 @@ export default class LogbookList extends Component {
         super(props);
     }
 
+    static navigationOptions = {
+        drawerLabel: 'Logbooks'
+    };
+
     componentWillMount()
     {
         this.props.updateTitle('Logbooks');

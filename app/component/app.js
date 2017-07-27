@@ -11,8 +11,7 @@ export default class App extends Component {
         super(props);
     }
 
-    render() {
-        
+    render() {        
         if (this.props.userId)
             return <View><Header /><Home /></View>
         else

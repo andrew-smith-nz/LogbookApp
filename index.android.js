@@ -11,7 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
-import App from './app/container/app'
+import App from './app/container/app';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import rootReducer from './app/reducer';

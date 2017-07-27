@@ -9,7 +9,7 @@ export default class Header extends Component {
         super(props);
     }
 
-  render() {
+    render() {
       return (
           <View>
             <View style={[styles.leftRow, { alignItems: 'center', paddingLeft:10, paddingTop: 5, paddingBottom: 5 }]}>
