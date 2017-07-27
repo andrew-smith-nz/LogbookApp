@@ -10,16 +10,17 @@ export function loginResult(bool, userId) {
         };
 }
 
-export function isLoggingIn(isLoggingIn) {
+export function onLoggingIn(loggingIn) {
+    console.log("logging in (" + loggingIn + ")");
     return {
         type: 'IS_LOGGING_IN',
-        isLoggingIn
+        loggingIn: loggingIn
     };
 }
 
 export function tryLogin(email, password) {
     return (dispatch) => {
-        dispatch(isLoggingIn(true));
+        dispatch(onLoggingIn(true));
          var url = 'http://www.theoutdoorlogbook.com/api/login/';
           var result = fetch(url, {
               method: 'POST',
@@ -31,7 +32,15 @@ export function tryLogin(email, password) {
           })
         .then((response) => { return response.json() })
         .then((responseData) => { // responseData = undefined
+            dispatch(onLoggingIn(false));
             dispatch(loginResult(responseData ? true : false, responseData));
-        });
+        }); 
     }
+}
+
+export function updateTitle(title) {
+    return {
+        type: 'UPDATE_TITLE',
+        title
+    };
 }

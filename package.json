@@ -9,7 +9,9 @@
   "dependencies": {
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.4",
+    "react-native-side-menu": "^1.0.2",
     "react-native-simple-login": "^1.1.0",
+    "react-native-vector-icons": "^4.2.0",
     "redux-persist": "^4.8.2",
     "redux-thunk": "^2.2.0"
   },
