@@ -15,6 +15,11 @@ export default class Login extends Component {
     };
   }
 
+  
+    static navigationOptions = {
+        //visible: false,  TODO
+    };
+
     render() {     
     return (
       <ScrollView style={[styles.flexColumn, styles.container]}>

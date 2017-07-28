@@ -11,6 +11,15 @@ export default class App extends Component {
         super(props);
     }
 
+    componentWillMount()
+    {
+        console.log(this.props);
+        if (this.props.userId)
+            nav.dispatch({ type: 'Login' });
+        else
+            nav.dispatch({ type: 'Home' });
+    }
+
     render() {        
         if (this.props.userId)
             return <View><Header /><Home /></View>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Text} from 'react-native';
+import {AppRegistry, StyleSheet, View, Text, Button} from 'react-native';
 import styles from '../../style/stylesheet.js'
-import LogbookList from '../container/logbookList'
+import Header from '../component/header'
 
 export default class Home extends Component {
     constructor(props) {
@@ -10,10 +10,19 @@ export default class Home extends Component {
 
     componentWillMount()
     {
-        this.props.updateTitle('Home');
+        //this.props.updateTitle('Home');
+    }
+
+    goToLogin() {
+        this.props.navigation.dispatch({ type: 'NAVIGATE_TO', routeName: 'LogbookList' });
     }
 
     render() {
-        return <View style={{margin:5}}><Text>Home</Text></View>
+        return  <View>
+                    <Header navigation={this.props.navigation} title="Home" />
+                    <View style={{margin:5}}>
+                        <Button onPress={this.goToLogin.bind(this)} title="Test" />
+                    </View>
+                </View>
     }
 }

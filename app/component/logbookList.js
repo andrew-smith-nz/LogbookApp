@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import styles from '../../style/stylesheet.js'
+import Header from '../container/header'
 
 export default class LogbookList extends Component {
     constructor(props) {
@@ -8,7 +9,7 @@ export default class LogbookList extends Component {
     }
 
     static navigationOptions = {
-        drawerLabel: 'Logbooks'
+        drawerLabel: 'My Logbooks'
     };
 
     componentWillMount()
@@ -17,6 +18,8 @@ export default class LogbookList extends Component {
     }
 
     render() {
-        return <View style={{margin:5}}><Text>Logbooks</Text></View>
+        return  <View style={{margin:5}}>
+                    <Header navigation={this.props.navigation} title="My Logbooks" />
+                </View>
     }
 }

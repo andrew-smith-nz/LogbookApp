@@ -14,10 +14,18 @@ import {
 import App from './app/container/app';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import rootReducer from './app/reducer';
+import rootReducer from './app/reducer/index';
 import thunk from 'redux-thunk';
+import Routes from "./app/config/routes";
+import { connect } from 'react-redux';
+import { navReducer } from './app/reducer/navigation';
 
-let store = createStore(rootReducer, applyMiddleware(thunk));
+
+import { DrawerNavigator, addNavigationHelpers } from "react-navigation";
+
+import AppWithNavigationState from './app/navigator/appNavigator';
+
+let store = createStore(combineReducers({rootReducer, navReducer}), applyMiddleware(thunk));
 
 export default class LogbookNew extends Component {
 
@@ -28,9 +36,7 @@ export default class LogbookNew extends Component {
   render() {
     return (
       <Provider store={store}>
-        <View>      
-          <App />
-        </View>
+        <AppWithNavigationState />
       </Provider>
     );
   }
