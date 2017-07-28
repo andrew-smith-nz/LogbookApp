@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, View, Text, Button} from 'react-native';
 import styles from '../../style/stylesheet.js'
-import Header from '../component/header'
+import Header from '../components/header'
 
 export default class Home extends Component {
     constructor(props) {

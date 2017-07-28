@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View, AsyncStorage } from 'react-native';
-import Login from '../component/login';
+import Login from '../components/login';
 import { connect } from 'react-redux';
 import { tryLogin } from '../actions/items';
 

@@ -11,14 +11,13 @@ import {
   Text,
   View
 } from 'react-native';
-import App from './app/container/app';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import rootReducer from './app/reducer/index';
+import rootReducer from './app/reducers/index';
 import thunk from 'redux-thunk';
-import Routes from "./app/config/routes";
+import Routes from "./app/configs/routes";
 import { connect } from 'react-redux';
-import { navReducer } from './app/reducer/navigation';
+import { navReducer } from './app/reducers/navigation';
 
 
 import { DrawerNavigator, addNavigationHelpers } from "react-navigation";

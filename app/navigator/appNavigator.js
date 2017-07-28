@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, DrawerNavigator, DrawerItems } from 'react-navigation';
 import View from 'react-native'
-import DrawerMenu from '../component/drawerMenu'
+import DrawerMenu from '../components/drawerMenu'
 
-import Routes from '../config/routes'
+import Routes from '../configs/routes'
 
 export const AppNavigator = DrawerNavigator(Routes, { contentComponent: props => <DrawerMenu {...props} /> });
 
