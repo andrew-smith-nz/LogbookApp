@@ -4,7 +4,7 @@ import Login from '../components/login';
 import { connect } from 'react-redux';
 import { tryLogin } from '../actions/items';
 
-function mapStateToProps(state) { console.log(state); return { userId: state.rootReducer.login.userId, loggingIn: state.rootReducer.isLoggingIn.loggingIn } }
+function mapStateToProps(state) { return { userId: state.login.userId, loggingIn: state.isLoggingIn.loggingIn } }
 function mapDispatchToProps(dispatch) { 
     return { tryLogin: (email, password) => dispatch(tryLogin(email, password)) } 
 }

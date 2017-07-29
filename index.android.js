@@ -17,14 +17,13 @@ import rootReducer from './app/reducers/index';
 import thunk from 'redux-thunk';
 import Routes from "./app/configs/routes";
 import { connect } from 'react-redux';
-import { navReducer } from './app/reducers/navigation';
 
 
 import { DrawerNavigator, addNavigationHelpers } from "react-navigation";
 
 import AppWithNavigationState from './app/navigator/appNavigator';
 
-let store = createStore(combineReducers({rootReducer, navReducer}), applyMiddleware(thunk));
+let store = createStore(rootReducer, applyMiddleware(thunk));
 
 export default class LogbookNew extends Component {
 

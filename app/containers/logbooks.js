@@ -4,7 +4,7 @@ import Logbooks from '../components/logbooks';
 import { connect } from 'react-redux';
 import { updateTitle } from '../actions/items';
 
-function mapStateToProps(state) { return { userId: state.rootReducer.login.userId }; }
-function mapDispatchToProps(dispatch) { return { updateTitle: (title) => dispatch(updateTitle(title)) } }
+function mapStateToProps(state) { return { userId: state.login.userId }; }
+function mapDispatchToProps(dispatch) {  }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Logbooks);
+export default connect(mapStateToProps, null)(Logbooks);

@@ -11,7 +11,6 @@ export function loginResult(bool, userId) {
 }
 
 export function onLoggingIn(loggingIn) {
-    console.log("logging in (" + loggingIn + ")");
     return {
         type: 'IS_LOGGING_IN',
         loggingIn: loggingIn
@@ -31,9 +30,13 @@ export function tryLogin(email, password) {
                 body: JSON.stringify({ username: email, password })
           })
         .then((response) => { return response.json() })
-        .then((responseData) => { // responseData = undefined
+        .then((responseData) => { 
             dispatch(onLoggingIn(false));
             dispatch(loginResult(responseData ? true : false, responseData));
+            if (responseData)
+                {
+                    dispatch(NavigateTo('Home'));
+                }
         }); 
     }
 }
@@ -43,4 +46,29 @@ export function updateTitle(title) {
         type: 'UPDATE_TITLE',
         title
     };
+}
+
+export function NavigateTo(routeName) {
+    return {
+        type: 'NAVIGATE_TO',
+        routeName
+    };
+}
+
+export function pingResult(result) {
+    return {
+                type: result ? 'PING_SUCCESS' : 'PING_FAILURE'
+            }
+}
+
+export function ping(){
+    return (dispatch) => {
+        var url = 'http://www.theoutdoorlogbook.com/api/ping/';
+        return fetch(url)
+            .then(function(data) { return true; }, function(error) {return false;})
+            .then(function(result)
+            {
+                dispatch(pingResult(result));
+            });    
+    }
 }

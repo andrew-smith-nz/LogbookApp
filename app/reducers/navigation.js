@@ -11,7 +11,6 @@ export function updateTitle (state = '', action) {
 }
 
 export function navReducer(state, action) {
-    console.log(action);
   let nextState = AppNavigator.router.getStateForAction(action, state);
   switch(action.type)
   {

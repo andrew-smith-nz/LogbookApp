@@ -1,11 +1,14 @@
 import { combineReducers } from 'redux';
 import { login, isLoggingIn } from './user';
-import { updateTitle } from './navigation';
+import { updateTitle, navReducer } from './navigation';
+import { ping } from './connection'
 
 const rootReducer = combineReducers({
     login,
     isLoggingIn,
-    updateTitle
+    updateTitle,
+    navReducer,
+    ping
 });
 
 export default rootReducer; 
