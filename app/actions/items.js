@@ -58,7 +58,7 @@ export function NavigateTo(routeName) {
 export function pingResult(result) {
     return {
                 type: result ? 'PING_SUCCESS' : 'PING_FAILURE'
-            }
+            };
 }
 
 export function ping(){
@@ -70,5 +70,48 @@ export function ping(){
             {
                 dispatch(pingResult(result));
             });    
+    }
+}
+
+export function loadEntries(entries){
+    return {
+                type: 'LOAD_ENTRIES',
+                entries
+            };
+}
+
+export function updateSyncProgress(syncProgress){
+    return {
+                type: 'UPDATE_SYNC_PROGRESS',
+                syncProgress
+            };
+}
+
+export function getEntriesFromServer(userId){
+    return (dispatch) => {
+    var url = 'http://www.theoutdoorlogbook.com/api/getentries/' + userId;
+       fetch(url)
+           .then(function(data) { return data.json(); })
+           .then(function(actualData) {
+               /* AsyncStorage.getItem("Entries").then(function(data) {
+                    var existingEntries = JSON.parse(data);
+                    for(i=0;i<existingEntries;i++)
+                    {
+                        if (!existingEntries[i].synced)
+                        {
+                            actualData.push(existingEntries[i]);
+                        }
+                    }
+                    AsyncStorage.setItem("Entries", JSON.stringify(actualData));
+                    this.setState({ refreshedEntries: 'Done' });
+                    this.setState({ syncStatus: 'Complete'});
+               }.bind(this)); */
+              console.log(actualData);
+              dispatch(loadEntries(actualData));
+              dispatch(updateSyncProgress(50));
+           }.bind(this))
+           .catch(function(error) {
+               // If there is any error you will catch them here
+           });
     }
 }

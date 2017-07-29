@@ -9,26 +9,29 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  AsyncStorage,
 } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import rootReducer from './app/reducers/index';
 import thunk from 'redux-thunk';
 import Routes from "./app/configs/routes";
 import { connect } from 'react-redux';
+import {persistStore, autoRehydrate} from 'redux-persist'
 
 
 import { DrawerNavigator, addNavigationHelpers } from "react-navigation";
 
 import AppWithNavigationState from './app/navigator/appNavigator';
 
-let store = createStore(rootReducer, applyMiddleware(thunk));
+let store = createStore(rootReducer, compose(applyMiddleware(thunk), autoRehydrate()));
 
 export default class LogbookNew extends Component {
 
   constructor(props){
     super(props);
+    persistStore(store, {storage: AsyncStorage});
   }
   
   render() {

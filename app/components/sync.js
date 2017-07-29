@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text, Button, }  from 'react-native';
+import { View, Text, Button, ActivityIndicator }  from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../containers/header'
@@ -8,10 +8,11 @@ import { ping } from '../actions/items';
 export default class Sync extends Component{
     constructor(props) {
         super(props);
+        this.doSync = this.doSync.bind(this);
     }
 
     componentWillMount(){
-        
+         this.props.ping();
     }
 
     static navigationOptions = {
@@ -21,23 +22,60 @@ export default class Sync extends Component{
             ),
     };
 
+    displayConnectionStatus(connectionStatus){
+        if (connectionStatus == true)
+            return <Text>Internet connection status: Connected</Text>;
+        else if (connectionStatus == false)
+            return <Text>Internet connection status: Not Connected</Text>;
+        else
+            return <View style={styles.centerRow}><Text>Internet connection status: </Text><ActivityIndicator /></View>;
+    }
+
+    doSync(){
+     /* 1. Delete unsynced modified entries that no longer exist on server (either deleted or belong to a deleted logbook)
+		2. Delete unsynced modified logbooks that are deleted on server 
+		3. Delete unsynced new entries for logbooks that have been deleted on server.
+		4. Upload unsynced edits to existing logbooks
+		5. Upload unsynced new logbooks
+		6. Upload unsynced changes to existing entries
+		7. Upload unsynced new entries
+		8. Process server-side deletes for unsynced deleted entries.
+		9. Process server-side deletes for unsynced deleted logbooks.
+		10. Replace all local content with fresh download from website (and make sure all are marked status='synced') */
+
+        console.log('Starting sync...');
+        
+        this.props.getEntriesFromServer(this.props.userId);
+    }
+
     render(){
         return  (<View style={styles.flexColumn}>
                     <Header navigation={this.props.navigation} title="Sync" />
                     <View style={[styles.flexColumn, { margin:5 }]}>
                         <Text style={{fontSize:12}}>
-                            Syncronising with the website will upload any logbooks and entries created in the app, and download any new entries created on the website.
+                            Syncronising with the website will upload any logbooks and entries created in the app, and download any new entries created on the website.  
+                            This process requires a stable internet connection.
                         </Text>
                         <Text style={{fontSize:12, fontWeight: 'bold'}}>
-                            Even if you do not use the website, it is recommended you do this frequently (at least once a week) as you may lose unsynchronised data if your device is damaged or lost.
+                            Even if you do not use the website, it is recommended you sync regularly as you may lose unsynchronised data if your device is damaged or lost.
                         </Text>
                     </View>
-                    <View style={[styles.centerRow, { margin:5 }]}> 
-                                               
-                        <Text>Internet connection status: {this.props.connectionStatus ? 'Connected' : 'Not Connected'}</Text>
+                    <View style={[styles.centerRow, { margin:5 }]}>                                                
+                        {this.displayConnectionStatus(this.props.connectionStatus)}
+                    </View>
+                    {/* <View style={[styles.centerRow, { margin:5 }]}>                                                
+                        <Text>You have {this.props.unsyncedEntries.entries} unsynced entries</Text>
+                    </View> */}
+                    <View style={[styles.flexColumn, { margin:5, marginTop:30 }]}>
+                        <Button title="Sync Now" onPress={this.doSync} disabled={!this.props.connectionStatus} /> 
                     </View>
                     <View style={[styles.flexColumn, { margin:5 }]}>
-                        <Button title="Sync Now" onPress={() => this.props.ping()} /> 
+                        <View style={styles.centerRow}>
+                            <Text>Sync in Progress</Text>
+                        </View>
+                        <View style={styles.centerRow}>
+                            <Text>Progress: {this.props.syncProgress}%</Text>
+                        </View>
                     </View>
                 </View>);
     }

@@ -16,12 +16,12 @@ export default class Home extends Component {
             ),
     };
 
-    componentWillMount()
+    componentWillMount()    
     {
         if (!this.props.userId)
-            {
-                this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Login'});                
-            }
+        {
+            this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Login'});                
+        }
     }
 
     render() {

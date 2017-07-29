@@ -1,5 +1,5 @@
 export function ping (state = false, action){
-    switch(action.Type)
+    switch(action.type)
     {
         case 'PING_SUCCESS':
             return { connectionStatus: true };

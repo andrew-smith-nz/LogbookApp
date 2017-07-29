@@ -16,4 +16,17 @@ export default StyleSheet.create({
     headerLogo: {height:36, width:72, margin:5},
     headerBurger: {height:32, width:32, margin:5},
     steelBlue: { color: '#004A7F' },
+    
+    tableRow: {
+        borderTopWidth:1,
+        borderTopColor:'black',
+        borderLeftWidth:1,
+        borderLeftColor:'black',
+        borderRightWidth:1,
+        borderRightColor:'black',
+        padding:10,
+    },
+    tableRowLast: {
+        borderBottomWidth:1,
+        borderBottomColor:'black',}
 });
