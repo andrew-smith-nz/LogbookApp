@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
 
     flexColumn: { flexDirection: 'column' },
-    leftRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent:'flex-start' },
+    leftRow: { flexDirection: 'row', alignItems: 'center', justifyContent:'flex-start' },
     centerRow: { flexDirection: 'row', alignItems: 'center', justifyContent:'center' },
     rightRow: { flexDirection: 'row', alignItems: 'flex-end', justifyContent:'flex-end' },
     input: { flex: 1, margin: 10, borderStyle:'solid', borderColor:'#cccccc', borderWidth:1, paddingLeft:5, paddingRight:5, paddingTop:0, paddingBottom:0 },

@@ -1,3 +1,4 @@
+
 export function loginResult(bool, userId) {
     if (bool)
         return {
@@ -41,13 +42,6 @@ export function tryLogin(email, password) {
     }
 }
 
-export function updateTitle(title) {
-    return {
-        type: 'UPDATE_TITLE',
-        title
-    };
-}
-
 export function NavigateTo(routeName) {
     return {
         type: 'NAVIGATE_TO',
@@ -73,13 +67,6 @@ export function ping(){
     }
 }
 
-export function loadEntries(entries){
-    return {
-                type: 'LOAD_ENTRIES',
-                entries
-            };
-}
-
 export function updateSyncProgress(syncProgress){
     return {
                 type: 'UPDATE_SYNC_PROGRESS',
@@ -87,26 +74,12 @@ export function updateSyncProgress(syncProgress){
             };
 }
 
-export function getEntriesFromServer(userId){
+export function getEntries(userId){
     return (dispatch) => {
     var url = 'http://www.theoutdoorlogbook.com/api/getentries/' + userId;
        fetch(url)
            .then(function(data) { return data.json(); })
            .then(function(actualData) {
-               /* AsyncStorage.getItem("Entries").then(function(data) {
-                    var existingEntries = JSON.parse(data);
-                    for(i=0;i<existingEntries;i++)
-                    {
-                        if (!existingEntries[i].synced)
-                        {
-                            actualData.push(existingEntries[i]);
-                        }
-                    }
-                    AsyncStorage.setItem("Entries", JSON.stringify(actualData));
-                    this.setState({ refreshedEntries: 'Done' });
-                    this.setState({ syncStatus: 'Complete'});
-               }.bind(this)); */
-              console.log(actualData);
               dispatch(loadEntries(actualData));
               dispatch(updateSyncProgress(50));
            }.bind(this))
@@ -114,4 +87,55 @@ export function getEntriesFromServer(userId){
                // If there is any error you will catch them here
            });
     }
+}
+
+export function loadEntries(entries){
+    return {
+                type: 'LOAD_ENTRIES',
+                entries
+            };
+}
+
+export function getActivities(userId)
+{
+    return (dispatch) => {
+    var url = 'http://www.theoutdoorlogbook.com/api/activities/' + userId;
+       fetch(url)
+           .then(function(data) { return data.json(); })
+           .then(function(actualData) {
+              dispatch(loadActivities(actualData));
+           }.bind(this))
+           .catch(function(error) {
+               // If there is any error you will catch them here
+           });
+    }
+}
+
+export function loadActivities(activities){
+    return {
+                type: 'LOAD_ACTIVITIES',
+                activities
+            };
+}
+
+export function getLogbooks(userId)
+{
+    return (dispatch) => {
+    var url = 'http://www.theoutdoorlogbook.com/api/logbooks/' + userId;
+       fetch(url)
+           .then(function(data) { return data.json(); })
+           .then(function(actualData) {
+              dispatch(loadLogbooks(actualData));
+           }.bind(this))
+           .catch(function(error) {
+               // If there is any error you will catch them here
+           });
+    }
+}
+
+export function loadLogbooks(logbooks){
+    return {
+                type: 'LOAD_LOGBOOKS',
+                logbooks
+            };
 }

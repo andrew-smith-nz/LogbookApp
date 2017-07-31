@@ -1,28 +1,37 @@
 Logbook
 	Id
 	Name
-	LogbookActivity
-		Id
-		Name
+	DefaultActivityId
 	LastUpdated
 	Status
-	Entries
+	SyncStatus
+
+LogbookEntry
+	Id
+	ActivityId
+	Status  
+	SyncStatus { 'New', 'Deleted', 'Edited', 'Synced' }
+	Date
+	Notes
+	Fields
 		Id
-		Activity
+		CustomText
+		Options
 			Id
-			Name
-		Status
-		Synced
-		Date
-		Notes
-		Fields
-			Id
-			Name
-			SortOrder
-			AllowCustomText
-			CustomText
-			Options
-				Id
-				Text
-				SortOrder
-				Selected
+			Selected
+
+			
+Activity
+	Id
+	Name
+	
+Field
+	Id
+	Name
+	SortOrder
+	AllowCustomText
+	
+FieldOption
+	Id
+	Name
+	SortOrder

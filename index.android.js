@@ -19,22 +19,31 @@ import thunk from 'redux-thunk';
 import Routes from "./app/configs/routes";
 import { connect } from 'react-redux';
 import {persistStore, autoRehydrate} from 'redux-persist'
+import './reactotronConfig';
+import Reactotron from 'reactotron-react-native'
 
 
 import { DrawerNavigator, addNavigationHelpers } from "react-navigation";
 
 import AppWithNavigationState from './app/navigator/appNavigator';
 
-let store = createStore(rootReducer, compose(applyMiddleware(thunk), autoRehydrate()));
+let store = createStore(rootReducer, compose(applyMiddleware(thunk), autoRehydrate({log:true})));
 
 export default class LogbookNew extends Component {
 
   constructor(props){
     super(props);
-    persistStore(store, {storage: AsyncStorage});
+        this.state = { rehydrated: false }
+    }
+  componentWillMount(){
+    const persistor = persistStore(store, {storage: AsyncStorage, blacklist: ['updateSyncProgress', 'ping', 'isLoggingIn', 'navReducer']}, () => { this.setState({ rehydrated: true })});
+    //persistor.purge()
   }
   
   render() {
+    if(!this.state.rehydrated){
+      return <Text>Loading...</Text>
+    }
     return (
       <Provider store={store}>
         <AppWithNavigationState />

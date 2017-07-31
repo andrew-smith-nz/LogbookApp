@@ -3,6 +3,7 @@ import {AppRegistry, StyleSheet, View, Text, Button} from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Header from '../components/header'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Reactotron from 'reactotron-react-native'
 
 export default class Home extends Component {
     constructor(props) {
@@ -18,6 +19,7 @@ export default class Home extends Component {
 
     componentWillMount()    
     {
+        Reactotron.log("userId: " + this.props.userId);
         if (!this.props.userId)
         {
             this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Login'});                

@@ -1,11 +1,11 @@
-export function login (state = 0, action) {
+export function login (state = { userId:'' }, action) {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
-        return { loggedIn: true, userId: action.userId };
+        return { userId: action.userId };
     case 'LOGIN_FAILURE':
-        return { loggedIn: false, userId:'none', loginError:'An error occurred while logging in' };
+        return { userId:'none', loginError:'An error occurred while logging in' };
     case 'LOGOUT':
-        return { loggedIn: false, userId:'' };
+        return { userId:'' };
     default:
         return state;
   }

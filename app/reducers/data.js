@@ -1,3 +1,5 @@
+import Reactotron from 'reactotron-react-native';
+
 export function loadEntries(state = { logbookEntries: [] }, action)
 {
     switch (action.type)
@@ -8,6 +10,29 @@ export function loadEntries(state = { logbookEntries: [] }, action)
             return state;
     }
 }
+
+export function loadActivities(state = { activities: [] }, action)
+{
+    switch (action.type)
+    {
+        case 'LOAD_ACTIVITIES':
+            return { activities: action.activities }
+        default:
+            return state;
+    }
+}
+
+export function loadLogbooks(state = { logbooks: [] }, action)
+{
+    switch (action.type)
+    {
+        case 'LOAD_LOGBOOKS':
+            return { logbooks: action.logbooks }
+        default:
+            return state;
+    }
+}
+
 
 export function updateSyncProgress(state = 0, action)
 {

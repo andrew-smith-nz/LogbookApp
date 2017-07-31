@@ -13,6 +13,7 @@ export default class Sync extends Component{
 
     componentWillMount(){
          this.props.ping();
+        
     }
 
     static navigationOptions = {
@@ -24,9 +25,9 @@ export default class Sync extends Component{
 
     displayConnectionStatus(connectionStatus){
         if (connectionStatus == true)
-            return <Text>Internet connection status: Connected</Text>;
+            return <Text>Internet connection status: <Text style={{color:'green'}}>Connected</Text></Text>;
         else if (connectionStatus == false)
-            return <Text>Internet connection status: Not Connected</Text>;
+            return <Text>Internet connection status: <Text style={{color:'red'}}>Not Connected</Text></Text>;
         else
             return <View style={styles.centerRow}><Text>Internet connection status: </Text><ActivityIndicator /></View>;
     }
@@ -45,7 +46,12 @@ export default class Sync extends Component{
 
         console.log('Starting sync...');
         
-        this.props.getEntriesFromServer(this.props.userId);
+        this.props.getActivities(this.props.userId);
+        this.props.getLogbooks(this.props.userId);
+        this.props.getEntries(this.props.userId);
+
+        // To user:  'Uploading data...'  (progress bar item/items)   Per item, uploads to server and then marks as synced if successful.   
+        // 'Synchronising with server...'  (no progress bar)  just downloads everything and overwrites local. Only runs if everything is marked as synced
     }
 
     render(){
@@ -67,7 +73,7 @@ export default class Sync extends Component{
                         <Text>You have {this.props.unsyncedEntries.entries} unsynced entries</Text>
                     </View> */}
                     <View style={[styles.flexColumn, { margin:5, marginTop:30 }]}>
-                        <Button title="Sync Now" onPress={this.doSync} disabled={!this.props.connectionStatus} /> 
+                        <Button title="Sync Now" onPress={this.doSync} disabled={this.props.connectionStatus != true} /> 
                     </View>
                     <View style={[styles.flexColumn, { margin:5 }]}>
                         <View style={styles.centerRow}>
