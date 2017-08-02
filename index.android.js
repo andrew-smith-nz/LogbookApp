@@ -36,7 +36,7 @@ export default class LogbookNew extends Component {
         this.state = { rehydrated: false }
     }
   componentWillMount(){
-    const persistor = persistStore(store, {storage: AsyncStorage, blacklist: ['updateSyncProgress', 'ping', 'isLoggingIn', 'navReducer']}, () => { this.setState({ rehydrated: true })});
+    const persistor = persistStore(store, {storage: AsyncStorage, blacklist: ['ping', 'isLoggingIn', 'navReducer']}, () => { this.setState({ rehydrated: true })});
     //persistor.purge()
   }
   

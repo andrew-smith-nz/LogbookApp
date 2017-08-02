@@ -3,7 +3,7 @@ import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, ScrollVie
 import styles from '../../style/stylesheet.js'
 import Header from '../containers/header'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import EntryItem from './entryItem'
+import EntryItem from '../containers/entryItem'
 import Reactotron from 'reactotron-react-native'
 
 export default class Logbooks extends Component {
@@ -34,7 +34,6 @@ export default class Logbooks extends Component {
 
     showEntriesForLogbook()
     {
-        Reactotron.log(this.props.entries.length);
         let entries = [];
         for (i = 0; i < this.props.entries.length; i++)
             {

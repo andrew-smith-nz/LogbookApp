@@ -5,7 +5,30 @@ export function loadEntries(state = { logbookEntries: [] }, action)
     switch (action.type)
     {
         case 'LOAD_ENTRIES':
-            return { logbookEntries: action.entries, syncProgress: 50 }
+            return { logbookEntries: action.entries }
+        case 'CREATE_ENTRY':
+        {
+            let entries = state.logbookEntries;
+            entries.push(action.entry);
+            return { 
+                logbookEntries: entries
+            }
+        }
+         case 'UPDATE_ENTRY':
+        {
+            let entries = state.logbookEntries;
+            let newEntries = [];
+            for (i = 0; i < entries.length; i++)
+                {
+                    if (entries[i].LogbookEntryId === action.entry.LogbookEntryId)
+                        newEntries.push(action.entry);
+                    else
+                        newEntries.push(entries[i]);
+                }
+            return { 
+                logbookEntries: newEntries
+            }
+        }
         default:
             return state;
     }
@@ -53,13 +76,4 @@ export function loadFieldOptions(state = { fieldOptions: [] }, action)
         default:
             return state;
     }
-}
-
-
-export function updateSyncProgress(state = 0, action)
-{
-    if (action.type == "UPDATE_SYNC_PROGRESS")
-        return { syncProgress: action.syncProgress }
-    else
-        return state;
 }

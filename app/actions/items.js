@@ -68,23 +68,18 @@ export function ping(){
     }
 }
 
-export function updateSyncProgress(syncProgress){
-    return {
-                type: 'UPDATE_SYNC_PROGRESS',
-                syncProgress
-            };
-}
-
-export function getEntries(userId){
+export function getEntries(userId, progressCallback){
     return (dispatch) => {
     var url = 'http://www.theoutdoorlogbook.com/api/getentries/' + userId;
        fetch(url)
            .then(function(data) { return data.json(); })
            .then(function(actualData) {
               dispatch(loadEntries(actualData));
-              dispatch(updateSyncProgress(50));
+              progressCallback();
            }.bind(this))
            .catch(function(error) {
+                Reactotron.log("Error in getEntries:");
+                Reactotron.log(error);
                // If there is any error you will catch them here
            });
     }
@@ -97,7 +92,7 @@ export function loadEntries(entries){
             };
 }
 
-export function getActivities(userId)
+export function getActivities(userId, progressCallback)
 {
     return (dispatch) => {
     var url = 'http://www.theoutdoorlogbook.com/api/activities/' + userId;
@@ -105,9 +100,11 @@ export function getActivities(userId)
            .then(function(data) { return data.json(); })
            .then(function(actualData) {
               dispatch(loadActivities(actualData));
+              progressCallback();
            }.bind(this))
            .catch(function(error) {
-               // If there is any error you will catch them here
+                Reactotron.log("Error in getActivities:");
+                Reactotron.log(error);
            });
     }
 }
@@ -119,7 +116,7 @@ export function loadActivities(activities){
             };
 }
 
-export function getLogbooks(userId)
+export function getLogbooks(userId, progressCallback)
 {
     return (dispatch) => {
     var url = 'http://www.theoutdoorlogbook.com/api/logbooks/' + userId;
@@ -127,9 +124,11 @@ export function getLogbooks(userId)
            .then(function(data) { return data.json(); })
            .then(function(actualData) {
               dispatch(loadLogbooks(actualData));
+              progressCallback();
            }.bind(this))
            .catch(function(error) {
-               // If there is any error you will catch them here
+                Reactotron.log("Error in getLogbooks:");
+                Reactotron.log(error);
            });
     }
 }
@@ -142,7 +141,7 @@ export function loadLogbooks(logbooks){
 }
         
 
-export function getFields(userId)
+export function getFields(userId, progressCallback)
 {
     return (dispatch) => {
     var url = 'http://www.theoutdoorlogbook.com/api/getFields/' + userId;
@@ -150,9 +149,11 @@ export function getFields(userId)
            .then(function(data) { return data.json(); })
            .then(function(actualData) {
               dispatch(loadFields(actualData));
+              progressCallback();
            }.bind(this))
            .catch(function(error) {
-               // If there is any error you will catch them here
+                Reactotron.log("Error in getFields:");
+                Reactotron.log(error);
            });
     }
 }
@@ -165,7 +166,7 @@ export function loadFields(fields){
 }
         
 
-export function getFieldOptions(userId)
+export function getFieldOptions(userId, progressCallback)
 {
     return (dispatch) => {
     var url = 'http://www.theoutdoorlogbook.com/api/getFieldOptions/' + userId;
@@ -173,9 +174,11 @@ export function getFieldOptions(userId)
            .then(function(data) { return data.json(); })
            .then(function(actualData) {
               dispatch(loadFieldOptions(actualData));
+              progressCallback();
            }.bind(this))
            .catch(function(error) {
-               // If there is any error you will catch them here
+                Reactotron.log("Error in getFieldOptions:");
+                Reactotron.log(error);
            });
     }
 }
@@ -184,5 +187,21 @@ export function loadFieldOptions(fieldOptions){
     return {
                 type: 'LOAD_FIELDOPTIONS',
                 fieldOptions
+            };
+}
+
+export function createEntry(entry)
+{
+    return {
+                type: 'CREATE_ENTRY',
+                entry
+            };
+}
+
+export function updateEntry(entry)
+{
+    return {
+                type: 'UPDATE_ENTRY',
+                entry
             };
 }

@@ -8,15 +8,14 @@ function mapStateToProps(state) { return {
     userId: state.login.userId, 
     connectionStatus: state.ping.connectionStatus, 
     entries: state.loadEntries.logbookEntries, 
-    syncProgress: state.updateSyncProgress.syncProgress,
 } }
 function mapDispatchToProps(dispatch) { return { 
     ping: () => dispatch(ping()), 
-    getEntries: (userId) => dispatch(getEntries(userId)), 
-    getActivities: (userId) => dispatch(getActivities(userId)), 
-    getLogbooks: (userId) => dispatch(getLogbooks(userId)),
-    getFields: (userId) => dispatch(getFields(userId)),
-    getFieldOptions: (userId) => dispatch(getFieldOptions(userId)),
+    getEntries: (userId, progressCallback) => dispatch(getEntries(userId, progressCallback)), 
+    getActivities: (userId, progressCallback) => dispatch(getActivities(userId, progressCallback)), 
+    getLogbooks: (userId, progressCallback) => dispatch(getLogbooks(userId, progressCallback)),
+    getFields: (userId, progressCallback) => dispatch(getFields(userId, progressCallback)),
+    getFieldOptions: (userId, progressCallback) => dispatch(getFieldOptions(userId, progressCallback)),
 } }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sync);

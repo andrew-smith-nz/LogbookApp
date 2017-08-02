@@ -19,7 +19,6 @@ export default class Home extends Component {
 
     componentWillMount()    
     {
-        Reactotron.log("userId: " + this.props.userId);
         if (!this.props.userId)
         {
             this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Login'});                

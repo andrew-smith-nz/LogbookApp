@@ -1,5 +1,6 @@
 import { AppNavigator } from '../navigator/appNavigator';
 import { NavigationActions } from 'react-navigation';
+import Reactotron from 'reactotron-react-native'
 
 export function navReducer(state, action) {
   let nextState = AppNavigator.router.getStateForAction(action, state);
@@ -7,7 +8,7 @@ export function navReducer(state, action) {
   {
     case 'NAVIGATE_TO':
         nextState = AppNavigator.router.getStateForAction(
-            NavigationActions.navigate({ routeName: action.routeName }),
+            NavigationActions.navigate({ routeName: action.routeName, params: action.props} ),
             state
         ); 
         break;  
