@@ -16,11 +16,11 @@ export default class Header extends Component {
     render() {
       return (
           <View>
-            <View style={[styles.leftRow, { alignItems: 'center', paddingLeft:10, paddingTop: 5, paddingBottom: 5 }]}>
+            <View style={[styles.leftRow, { alignItems: 'center', paddingLeft:10, paddingTop: 5, paddingBottom: 5, backgroundColor:'#004A7F'  }]}>
                 <TouchableOpacity onPress={this.goToLogin.bind(this)}>
-                        <Icon name="bars" size={30} color='#004A7F' />
+                        <Icon name="bars" size={30} color='#ffffff' />
                 </TouchableOpacity>
-                <Text style={[styles.titleText, styles.steelBlue, {paddingLeft:20}]}>{this.props.title}</Text>        
+                <Text style={[styles.titleText, styles.steelBlue, {paddingLeft:20, color:'#ffffff'}]}>{this.props.title}</Text>        
             </View>
             <View style={[styles.divider]} />
         </View>

@@ -49,6 +49,8 @@ export default class Sync extends Component{
         this.props.getActivities(this.props.userId);
         this.props.getLogbooks(this.props.userId);
         this.props.getEntries(this.props.userId);
+        this.props.getFields(this.props.userId);
+        this.props.getFieldOptions(this.props.userId);
 
         // To user:  'Uploading data...'  (progress bar item/items)   Per item, uploads to server and then marks as synced if successful.   
         // 'Synchronising with server...'  (no progress bar)  just downloads everything and overwrites local. Only runs if everything is marked as synced

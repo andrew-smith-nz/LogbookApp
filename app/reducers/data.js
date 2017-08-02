@@ -33,6 +33,28 @@ export function loadLogbooks(state = { logbooks: [] }, action)
     }
 }
 
+export function loadFields(state = { fields: [] }, action)
+{
+    switch (action.type)
+    {
+        case 'LOAD_FIELDS':
+            return { fields: action.fields }
+        default:
+            return state;
+    }
+}
+
+export function loadFieldOptions(state = { fieldOptions: [] }, action)
+{
+    switch (action.type)
+    {
+        case 'LOAD_FIELDOPTIONS':
+            return { fieldOptions: action.fieldOptions }
+        default:
+            return state;
+    }
+}
+
 
 export function updateSyncProgress(state = 0, action)
 {

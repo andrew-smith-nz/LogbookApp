@@ -1,3 +1,4 @@
+import Reactotron from 'reactotron-react-native'
 
 export function loginResult(bool, userId) {
     if (bool)
@@ -137,5 +138,51 @@ export function loadLogbooks(logbooks){
     return {
                 type: 'LOAD_LOGBOOKS',
                 logbooks
+            };
+}
+        
+
+export function getFields(userId)
+{
+    return (dispatch) => {
+    var url = 'http://www.theoutdoorlogbook.com/api/getFields/' + userId;
+       fetch(url)
+           .then(function(data) { return data.json(); })
+           .then(function(actualData) {
+              dispatch(loadFields(actualData));
+           }.bind(this))
+           .catch(function(error) {
+               // If there is any error you will catch them here
+           });
+    }
+}
+
+export function loadFields(fields){
+    return {
+                type: 'LOAD_FIELDS',
+                fields
+            };
+}
+        
+
+export function getFieldOptions(userId)
+{
+    return (dispatch) => {
+    var url = 'http://www.theoutdoorlogbook.com/api/getFieldOptions/' + userId;
+       fetch(url)
+           .then(function(data) { return data.json(); })
+           .then(function(actualData) {
+              dispatch(loadFieldOptions(actualData));
+           }.bind(this))
+           .catch(function(error) {
+               // If there is any error you will catch them here
+           });
+    }
+}
+
+export function loadFieldOptions(fieldOptions){
+    return {
+                type: 'LOAD_FIELDOPTIONS',
+                fieldOptions
             };
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker } from 'react-native';
 import styles from '../../style/stylesheet.js'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class EntryItem extends Component {
     constructor(props){
@@ -11,6 +12,7 @@ export default class EntryItem extends Component {
 
     toggleExpand(){
         this.setState({expanded: !this.state.expanded})
+        this.props.forceParentRender();
     }
 
     getAlternatingRowColor()
@@ -24,8 +26,20 @@ export default class EntryItem extends Component {
     expandedRow(){
         return (
             <View style={[styles.flexColumn, {padding:5}]}>
-                        <Text>{this.props.entry.notes}</Text>
-                    </View> 
+                { this.props.entry.notes ? <Text style={{fontStyle:'italic', paddingBottom:10}}>{this.props.entry.notes}</Text> : null }
+                {this.props.entry.selectedFieldOptions.map( (ss, i) => {
+                    return <View key={"vvv" + i} style={styles.leftRow}>
+                                <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{ss.fieldName}</Text>
+                                <Text style={{width:'60%'}} key={'ft' + i}>{ss.fieldOptionText}</Text>
+                            </View>
+                })}
+                {this.props.entry.fieldCustomValues.map( (ss, i) => {
+                    return <View key={"vvv" + i} style={styles.leftRow}>
+                                <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{ss.fieldName}</Text>
+                                <Text style={{width:'60%'}} key={'ft' + i}>{ss.customValue}</Text>
+                            </View>
+                })}
+            </View> 
         );
     }
 
@@ -36,11 +50,10 @@ export default class EntryItem extends Component {
                     <Text style={{width:'40%', fontSize:12, fontWeight:'bold'}}>{this.props.entry.formattedDate}</Text>
                     <Text style={{width:'50%', fontSize:12, fontWeight:'bold'}}>{this.props.entry.activityName}</Text>
                     <TouchableOpacity style={{width:'10%'}} onPress={() => this.toggleExpand()}>
-                            <Text style={{fontSize:12, fontWeight:'bold'}}>{this.state.expanded ? "^" : "v"}</Text>
+                        <Icon name={this.state.expanded ? "chevron-up" : "chevron-down"} size={12} color="#000000" />
                     </TouchableOpacity>
                 </View>
-                {(this.state.expanded) ? 
-                    this.expandedRow() : null}
+                {(this.state.expanded) ? this.expandedRow() : null}
             </View>
             );
     }

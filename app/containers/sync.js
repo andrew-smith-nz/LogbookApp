@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import Sync from '../components/sync';
 import { connect } from 'react-redux';
-import { ping, getEntries, getActivities, getLogbooks } from '../actions/items';
+import { ping, getEntries, getActivities, getLogbooks, getFields, getFieldOptions } from '../actions/items';
 
 function mapStateToProps(state) { return { 
     userId: state.login.userId, 
@@ -15,6 +15,8 @@ function mapDispatchToProps(dispatch) { return {
     getEntries: (userId) => dispatch(getEntries(userId)), 
     getActivities: (userId) => dispatch(getActivities(userId)), 
     getLogbooks: (userId) => dispatch(getLogbooks(userId)),
+    getFields: (userId) => dispatch(getFields(userId)),
+    getFieldOptions: (userId) => dispatch(getFieldOptions(userId)),
 } }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sync);

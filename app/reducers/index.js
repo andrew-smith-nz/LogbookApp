@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { login, isLoggingIn } from './user';
 import { navReducer } from './navigation';
 import { ping } from './connection'
-import { loadEntries, updateSyncProgress, loadActivities, loadLogbooks } from './data'
+import { loadEntries, updateSyncProgress, loadActivities, loadLogbooks, loadFields, loadFieldOptions } from './data'
 
 const rootReducer = combineReducers({
     login,
@@ -13,6 +13,8 @@ const rootReducer = combineReducers({
     updateSyncProgress,
     loadActivities,
     loadLogbooks,
+    loadFields,
+    loadFieldOptions,
 });
 
 export default rootReducer; 
