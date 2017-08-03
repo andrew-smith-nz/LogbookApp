@@ -1,0 +1,15 @@
+Field:
+
+fieldId
+activityId
+name
+sortOrder
+allowFreeText
+isRequired
+
+FieldOption:
+
+fieldOptionId
+fieldId
+text
+sortOrder

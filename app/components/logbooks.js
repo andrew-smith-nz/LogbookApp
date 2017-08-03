@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, ScrollView} from 'react-native';
+import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, ScrollView, Button} from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Header from '../containers/header'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,7 +9,7 @@ import Reactotron from 'reactotron-react-native'
 export default class Logbooks extends Component {
     constructor(props) {
         super(props);
-        this.state = { selectedLogbookId: this.props.logbooks[0].LogbookId };
+        this.state = { selectedLogbookId: this.props.logbooks[0].logbookId };
         this.buildLogbookPicker = this.buildLogbookPicker.bind(this)
         this.showEntriesForLogbook = this.showEntriesForLogbook.bind(this)
         this.forceRender = this.forceRender.bind(this)
@@ -29,7 +29,7 @@ export default class Logbooks extends Component {
 
     buildLogbookPicker()
     {
-        return this.props.logbooks.map(a => { return (<Picker.Item label={a.Name} value={a.LogbookId} key={a.LogbookId} />) });
+        return this.props.logbooks.map(a => { return (<Picker.Item label={a.name} value={a.logbookId} key={a.logbookId} />) });
     }
 
     showEntriesForLogbook()
@@ -45,10 +45,15 @@ export default class Logbooks extends Component {
                         <Text style={{padding:5, paddingTop:20}}>There are no entries in this logbook.</Text>
                     </View>
         let i = 0;
-        return entries.sort(this.dateSort).map(a => { return (<EntryItem entry={a} index={i++} key={a.LogbookEntryId} forceParentRender={this.forceRender} />) })
+        return entries.sort(this.dateSort).map(a => { return (<EntryItem entry={a} index={i++} key={a.logbookEntryId} forceParentRender={this.forceRender} />) })
+    }
+
+    newEntry(){
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: { logbookId: this.state.selectedLogbookId } } });
     }
 
     render() {
+    const buttonIcon = () => { return <Icon name="gear" style={styles.actionButtonIcon} />;};
         return  <View>
                     <Header navigation={this.props.navigation} title="My Logbooks" />
                     <View style={[styles.leftRow, {margin:5}]}>
@@ -58,18 +63,24 @@ export default class Logbooks extends Component {
                         </Picker>
                     </View>
                     <View style={styles.divider} />
+                    <View style={{padding:10}}>
+                        <Button title="New Entry" color='#4682b4' onPress={() => {this.newEntry()}} />
+                    </View>
                     <ScrollView>
                         <View>
                             {this.showEntriesForLogbook()}
-                        </View>
+                        </View>                        
                     </ScrollView>
                 </View>
     }
 
+
     dateSort(a,b) {
-        if (a.date < b.date)
+        a = new Date(a.date);
+        b = new Date(b.date);
+        if (a < b)
             return 1;
-        if (a.date > b.date)
+        if (a > b)
             return -1;
         return 0;
         }

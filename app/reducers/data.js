@@ -20,7 +20,7 @@ export function loadEntries(state = { logbookEntries: [] }, action)
             let newEntries = [];
             for (i = 0; i < entries.length; i++)
                 {
-                    if (entries[i].LogbookEntryId === action.entry.LogbookEntryId)
+                    if (entries[i].logbookEntryId === action.entry.logbookEntryId)
                         newEntries.push(action.entry);
                     else
                         newEntries.push(entries[i]);

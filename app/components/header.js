@@ -16,7 +16,7 @@ export default class Header extends Component {
     render() {
       return (
           <View>
-            <View style={[styles.leftRow, { alignItems: 'center', paddingLeft:10, paddingTop: 5, paddingBottom: 5, backgroundColor:'#004A7F'  }]}>
+            <View style={[styles.leftRow, { alignItems: 'center', paddingLeft:10, paddingTop: 5, paddingBottom: 5, backgroundColor:'#4682b4'  }]}>
                 <TouchableOpacity onPress={this.goToLogin.bind(this)}>
                         <Icon name="bars" size={30} color='#ffffff' />
                 </TouchableOpacity>

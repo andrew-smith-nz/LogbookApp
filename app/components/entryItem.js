@@ -29,18 +29,33 @@ export default class EntryItem extends Component {
 
     getActivityName(activityId)
     {
-        return this.props.activities.find(a => a.ActivityId === activityId).ActivityName;
+        return this.props.activities.find(a => a.activityId === activityId).activityName;
     }
 
     getFieldName(fieldId)
     {
-        return this.props.fields.find(a => a.FieldId === fieldId).Name;
+        return this.props.fields.find(a => a.fieldId === fieldId).name;
     }
 
     getFieldOptionText(fieldOptionId)
     {
-        return this.props.fieldOptions.find(a => a.FieldOptionId === fieldOptionId).Text;
+        return this.props.fieldOptions.find(a => a.fieldOptionId === fieldOptionId).text;
     }
+
+    formatDate(date) {
+       var monthNames = [
+         "January", "February", "March",
+         "April", "May", "June", "July",
+         "August", "September", "October",
+         "November", "December"
+       ];
+       var d = new Date(date);
+       var day = d.getDate();
+       var monthIndex = d.getMonth();
+       var year = d.getFullYear();
+
+       return ('0' + day).slice(-2) + '-' + monthNames[monthIndex].substring(0,3) + '-' + year;
+     }
 
     expandedRow(){
         return (
@@ -81,7 +96,7 @@ export default class EntryItem extends Component {
         return (
             <View style={{backgroundColor:this.getAlternatingRowColor()}}>
                 <View style={[styles.leftRow, { padding: 5 }]}>
-                    <Text style={{width:'35%', fontSize:12, fontWeight:'bold'}}>{this.props.entry.formattedDate}</Text>
+                    <Text style={{width:'35%', fontSize:12, fontWeight:'bold'}}>{this.formatDate(this.props.entry.date)}</Text>
                     <Text style={{flex:1, fontSize:12, fontWeight:'bold'}}>{this.getActivityName(this.props.entry.activityId)}</Text>
                     <TouchableOpacity style={{width:20}} onPress={() => this.toggleExpand()}>
                         <Icon name={this.state.expanded ? "chevron-up" : "chevron-down"} size={12} color="#000000" />

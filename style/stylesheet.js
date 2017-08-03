@@ -28,5 +28,10 @@ export default StyleSheet.create({
     },
     tableRowLast: {
         borderBottomWidth:1,
-        borderBottomColor:'black',}
+        borderBottomColor:'black',},
+   actionButtonIcon: {
+        fontSize: 20,
+        height: 22,
+        color: 'white',
+    },
 });
