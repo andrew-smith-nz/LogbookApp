@@ -29,6 +29,20 @@ export function loadEntries(state = { logbookEntries: [] }, action)
                 logbookEntries: newEntries
             }
         }
+        case 'DELETE_ENTRY':
+        {
+            let entries = state.logbookEntries;
+            let newEntries = [];
+            for (i = 0; i < entries.length; i++)
+                {
+                    if (entries[i].logbookEntryId === action.entry.logbookEntryId)
+                        entries[i].syncStatus = 'DELETED';
+                    newEntries.push(entries[i]);
+                }
+            return { 
+                logbookEntries: newEntries
+            }
+        }
         default:
             return state;
     }

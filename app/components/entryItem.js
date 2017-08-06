@@ -21,10 +21,20 @@ export default class EntryItem extends Component {
 
     getAlternatingRowColor()
     {
-        if (this.props.index % 2 === 0)
-            return '#eeeeee';
-        else
-            return '#ffffff';
+        if (this.props.entry.syncStatus === "SYNCED")
+        {
+            if (this.props.index % 2 === 0)
+                return '#eeeeee';
+            else
+                return '#ffffff';
+        }
+        else            
+        {
+            if (this.props.index % 2 === 0)
+                return '#ffffcc';
+            else
+                return '#ffff99';
+        }
     }
 
     getActivityName(activityId)
@@ -66,7 +76,7 @@ export default class EntryItem extends Component {
                         <TouchableOpacity style={{width:30}} onPress={() => this.goToEdit()}>
                             <Icon name="pencil-square-o" size={20} color="#000000" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width:30}} onPress={() => this.goToEdit()}>
+                        <TouchableOpacity style={{width:30}} onPress={() => this.deleteEntry()}>
                             <Icon name="trash" size={20} color="#000000" />
                         </TouchableOpacity>
                     </View>
@@ -85,6 +95,11 @@ export default class EntryItem extends Component {
                 })}
             </View> 
         );
+    }
+
+    deleteEntry()
+    {
+        this.props.dispatch({type: 'DELETE_ENTRY', entry: this.props.entry});
     }
 
     goToEdit()

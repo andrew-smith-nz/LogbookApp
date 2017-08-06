@@ -205,3 +205,42 @@ export function updateEntry(entry)
                 entry
             };
 }
+
+export function deleteEntry(entry)
+{
+    return {
+                type: 'DELETE_ENTRY',
+                entry
+            };
+}
+
+export function megaSync(userId, entries, logbooks, callback)
+{
+     return (dispatch) => {
+    var url = 'http://www.theoutdoorlogbook.com/api/Upload/' + userId;
+     return fetch(url, {
+          method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({entries: entries.filter(e => e.syncStatus !== "SYNCED"), logbooks: logbooks.filter(l => l.syncStatus !== "SYNCED")})
+      }).then(function(response) {
+          return response.json();
+      }).then(function(data) {
+          if (data.ok)
+            {
+                dispatch(loadLogbooks(data.logbooks));
+                dispatch(loadEntries(data.entries));
+                dispatch(loadActivities(data.activities));
+                dispatch(loadFields(data.fields));
+                dispatch(loadFieldOptions(data.fieldOptions));
+            }
+            callback(data);
+      })
+      .catch(function(error) {
+                Reactotron.log("Error in megaSync:");
+                Reactotron.log(error);
+            });
+    }
+}

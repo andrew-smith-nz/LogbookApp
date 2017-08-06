@@ -14,7 +14,8 @@ export default class DrawerMenu extends Component{
         let items = new Array();
         for (i = 0; i < this.props.items.length; i++)
             {
-                //if (this.props.items[i].routeName !== "Login")   //TODO: Re-instate
+                if (this.props.items[i].routeName !== "Login"
+                && this.props.items[i].routeName !== "EditEntry")   //TODO: Re-instate
                     items.push(this.props.items[i]);
             }
             

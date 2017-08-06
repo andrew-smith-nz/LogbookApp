@@ -48,6 +48,7 @@ export default class EditEntry extends Component {
         this.state.selectedLogbookId = entry.logbookId;
         this.state.activityId = entry.activityId;
         this.state.notes = entry.notes;
+        this.state.date = new Date(entry.date);
         this.state.fieldCustomValues = entry.fieldCustomValues;
         this.state.selectedFieldOptions = entry.selectedFieldOptions;
     }
@@ -230,7 +231,8 @@ export default class EditEntry extends Component {
         {            
             entry.syncStatus = "UPDATED";
             this.props.updateEntry(entry);  
-        }        
+        }      
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Logbooks', props: { selectedLogbookId: this.state.selectedLogbookId } });  
      }
 
     render(){

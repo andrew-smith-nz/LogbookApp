@@ -14,7 +14,8 @@ function mapStateToProps(state) { return {
 }; }
 function mapDispatchToProps(dispatch) {
     return { createEntry: (entry) => dispatch(createEntry(entry)),
-             updateEntry: (entry) => dispatch(updateEntry(entry)) } 
+             updateEntry: (entry) => dispatch(updateEntry(entry)),
+            dispatch } 
   }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditEntry);

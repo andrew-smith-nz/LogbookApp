@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import EntryItem from '../components/entryItem';
 import { connect } from 'react-redux';
-import { createEntry } from '../actions/items';
+import { createEntry, deleteEntry } from '../actions/items';
 
 function mapStateToProps(state) { return { 
     userId: state.login.userId, 
@@ -12,7 +12,8 @@ function mapStateToProps(state) { return {
     fieldOptions: state.loadFieldOptions.fieldOptions, 
 }; }
 function mapDispatchToProps(dispatch) {
-    return { createEntry: (entry) => dispatch(createEntry(entry)) } 
+    return { createEntry: (entry) => dispatch(createEntry(entry)),
+             deleteEntry: (entry) => dispatch(deleteEntry(entry)) } 
   }
 
 export default connect(mapStateToProps, null)(EntryItem);

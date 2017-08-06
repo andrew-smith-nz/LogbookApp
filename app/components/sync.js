@@ -37,28 +37,46 @@ export default class Sync extends Component{
     }
 
     doSync(){
-     /* 1. Delete unsynced modified entries that no longer exist on server (either deleted or belong to a deleted logbook)
-		2. Delete unsynced modified logbooks that are deleted on server 
-		3. Delete unsynced new entries for logbooks that have been deleted on server.
-		4. Upload unsynced edits to existing logbooks
-		5. Upload unsynced new logbooks
-		6. Upload unsynced changes to existing entries
-		7. Upload unsynced new entries
-		8. Process server-side deletes for unsynced deleted entries.
-		9. Process server-side deletes for unsynced deleted logbooks.
-		10. Replace all local content with fresh download from website (and make sure all are marked status='synced') */
-
-        console.log('Starting sync...');
         this.setState({syncStatus: "In Progress"});
-        
-        this.fireSync(this.props.getActivities, 20)
+
+
+        // 1. Delete unsynced modified entries that no longer exist on server (either deleted or belong to a deleted logbook)
+		// 2. Delete unsynced new entries for logbooks that have been deleted on server.
+		// 3. Delete unsynced modified logbooks that are deleted on server 
+		// 4. Upload unsynced edits to existing logbooks
+		// 5. Upload unsynced new logbooks
+		// 6. Upload unsynced changes to existing entries
+		// 7. Upload unsynced new entries
+		// 8. Process server-side deletes for unsynced deleted entries.
+		// 9. Process server-side deletes for unsynced deleted logbooks.
+		// 10. Replace all local content with fresh download from website (and make sure all are marked status='synced')
+
+        this.props.megaSync(this.props.userId, this.props.entries, this.props.logbooks, this.megaCallback)
+  
+       /*  this.fireSync(this.props.getActivities, 20)
         this.fireSync(this.props.getLogbooks, 20)
         this.fireSync(this.props.getEntries, 20)
         this.fireSync(this.props.getFields, 20)
-        this.fireSync(this.props.getFieldOptions, 20)
-
+        this.fireSync(this.props.getFieldOptions, 20) */
+  
         // To user:  'Uploading data...'  (progress bar item/items)   Per item, uploads to server and then marks as synced if successful.   
         // 'Synchronising with server...'  (no progress bar)  just downloads everything and overwrites local. Only runs if everything is marked as synced
+    }
+
+    megaCallback(data){
+        Reactotron.log(data);
+        // if (data.OK)
+        //     {
+        //         this.fireSync(this.props.getActivities, 20)
+        //         this.fireSync(this.props.getLogbooks, 20)
+        //         this.fireSync(this.props.getEntries, 20)
+        //         this.fireSync(this.props.getFields, 20)
+        //         this.fireSync(this.props.getFieldOptions, 20) 
+        //     }
+    }
+
+    executeInSequence(functions){
+
     }
 
     fireSync(syncFunction, progressPercent)
