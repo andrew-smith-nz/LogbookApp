@@ -26,6 +26,12 @@ export default class Home extends Component {
     }
 
     render() {
+        // Welcome back
+        // News
+        // Sync warning (if > 1 week) with Sync Now option
+        // Number of entries/logbooks  (general summary)
+        // Maybe some graphs or stats?
+        // Nice big ADD ENTRY quick button, goes straight to last edited logbook entry screen.
         return  <View>
                     <Header navigation={this.props.navigation} title="Home" />
                     <View style={{margin:5}}>

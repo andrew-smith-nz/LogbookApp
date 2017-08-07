@@ -241,6 +241,7 @@ export function megaSync(userId, entries, logbooks, callback)
       .catch(function(error) {
                 Reactotron.log("Error in megaSync:");
                 Reactotron.log(error);
+                callback({ ok: false, errors: ["Something went wrong"] });
             });
     }
 }

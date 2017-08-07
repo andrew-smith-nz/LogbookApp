@@ -12,7 +12,9 @@ export default class Sync extends Component{
         super(props);
         this.doSync = this.doSync.bind(this);
         this.state = { progress: 0, syncStatus: null };
-        this.incrementProgress = this.incrementProgress.bind(this);
+        this.megaCallback = this.megaCallback.bind(this);
+        this.getColorForSyncStatus = this.getColorForSyncStatus.bind(this);
+        this.getTextForSyncStatus = this.getTextForSyncStatus.bind(this);
     }
 
     componentWillMount(){
@@ -21,7 +23,7 @@ export default class Sync extends Component{
     }
 
     static navigationOptions = {
-        drawerLabel: 'Sync',
+        drawerLabel: 'Sync Data',
         drawerIcon: ({ tintColor }) => (
             <Icon name="refresh" size={24} color='#004A7F' />
             ),
@@ -31,100 +33,80 @@ export default class Sync extends Component{
         if (connectionStatus == true)
             return <Text>Internet connection status: <Text style={{color:'green'}}>Connected</Text></Text>;
         else if (connectionStatus == false)
-            return <Text>Internet connection status: <Text style={{color:'red'}}>Not Connected</Text></Text>;
+            return <View style={[styles.flexColumn, {alignItems:'center'}]}><Text>Internet connection status: <Text style={{color:'red'}}>Not Connected</Text></Text>
+            <Text style={{marginTop:10, fontWeight:'bold'}}>Syncing requires an internet connection</Text></View>;
         else
-            return <View style={styles.centerRow}><Text>Internet connection status: </Text><ActivityIndicator /></View>;
+            return <View style={styles.centerRow}><Text>Checking internet connection: </Text><ActivityIndicator /></View>;
     }
 
     doSync(){
         this.setState({syncStatus: "In Progress"});
 
-
-        // 1. Delete unsynced modified entries that no longer exist on server (either deleted or belong to a deleted logbook)
-		// 2. Delete unsynced new entries for logbooks that have been deleted on server.
-		// 3. Delete unsynced modified logbooks that are deleted on server 
-		// 4. Upload unsynced edits to existing logbooks
-		// 5. Upload unsynced new logbooks
-		// 6. Upload unsynced changes to existing entries
-		// 7. Upload unsynced new entries
-		// 8. Process server-side deletes for unsynced deleted entries.
-		// 9. Process server-side deletes for unsynced deleted logbooks.
-		// 10. Replace all local content with fresh download from website (and make sure all are marked status='synced')
-
         this.props.megaSync(this.props.userId, this.props.entries, this.props.logbooks, this.megaCallback)
-  
-       /*  this.fireSync(this.props.getActivities, 20)
-        this.fireSync(this.props.getLogbooks, 20)
-        this.fireSync(this.props.getEntries, 20)
-        this.fireSync(this.props.getFields, 20)
-        this.fireSync(this.props.getFieldOptions, 20) */
-  
-        // To user:  'Uploading data...'  (progress bar item/items)   Per item, uploads to server and then marks as synced if successful.   
-        // 'Synchronising with server...'  (no progress bar)  just downloads everything and overwrites local. Only runs if everything is marked as synced
     }
 
     megaCallback(data){
         Reactotron.log(data);
-        // if (data.OK)
-        //     {
-        //         this.fireSync(this.props.getActivities, 20)
-        //         this.fireSync(this.props.getLogbooks, 20)
-        //         this.fireSync(this.props.getEntries, 20)
-        //         this.fireSync(this.props.getFields, 20)
-        //         this.fireSync(this.props.getFieldOptions, 20) 
-        //     }
+        this.setState({syncStatus: data.ok ? "Complete" : "Failed"});
     }
 
-    executeInSequence(functions){
-
+    getColorForSyncStatus(){
+        switch (this.state.syncStatus)
+        {
+            case "In Progress":
+                return null;
+            case "Failed":
+                return { color: 'red' };
+            case "Complete":
+                return { color: 'green'};
+        }
     }
 
-    fireSync(syncFunction, progressPercent)
-    {
-        syncFunction(this.props.userId, () => { this.incrementProgress(progressPercent)});
-    }
-
-    incrementProgress(amountToIncrement) {
-        this.setState({progress: this.state.progress + amountToIncrement});
-        if (this.state.progress == 100)
-            this.setState({syncStatus: "Complete"});
+    getTextForSyncStatus(){
+        switch (this.state.syncStatus)
+        {
+            case "In Progress":
+                return null;
+            case "Failed":
+                return "Sorry, there must be a problem.  Try again in a few minutes.";
+            case "Complete":
+                return "Great!  Your data is all synced and secure.";
+        }
     }
 
     render(){
         return  (<View style={styles.flexColumn}>
                     <Header navigation={this.props.navigation} title="Sync" />
-                    <View style={[styles.flexColumn, { margin:5 }]}>
+                    <View style={[styles.flexColumn, { margin:5, alignItems:'center' }]}>
                         <Text style={{fontSize:12}}>
-                            Syncronising with the website will upload any logbooks and entries created in the app, and download any new entries created on the website.  
-                            This process requires a stable internet connection.
+                            The sync process uploads new data in this app to the website, and downloads any new data from the website.
                         </Text>
                         <Text style={{fontSize:12, fontWeight: 'bold'}}>
-                            Even if you do not use the website, it is recommended you sync regularly as you will lose your unsynchronised data if your device is damaged or lost.
+                            You should sync regularly even if you do not use the website, otherwise you risk losing your logs if your device is damaged or lost.
                         </Text>
                     </View>
-                    <View style={[styles.centerRow, { margin:5 }]}>                                                
+                    <View style={[styles.centerRow, { marginLeft:10, marginRight:10, marginTop:20, padding:15, borderWidth:1, borderColor:'#dddddd' }]}>                                                
                         {this.displayConnectionStatus(this.props.connectionStatus)}
                     </View>
                     {/* <View style={[styles.centerRow, { margin:5 }]}>                                                
                         <Text>You have {this.props.unsyncedEntries.entries} unsynced entries</Text>
                     </View> */}
-                    { !this.state.toot ?
-                    <View style={[styles.flexColumn, { margin:5, marginTop:30 }]}>
-                        <Button title="Sync Now" onPress={this.doSync} disabled={this.props.connectionStatus != true} /> 
-                    </View> : null }
+                    {this.props.connectionStatus && this.state.syncStatus !== "Complete" && this.state.syncStatus !== "In Progress" ?
+                        <View style={[styles.flexColumn, { margin:5, marginTop:30 }]}>
+                            <Button title="Sync Now" onPress={this.doSync} /> 
+                        </View> : null}
                     { this.state.syncStatus ?
                     <View style={[styles.flexColumn, { margin:5, marginTop:20 }]}>
-                        <View style={styles.centerRow}>
-                            <ProgressBar progress={this.state.progress / 100} width={200} height={20}></ProgressBar>
-                        </View>
                         <View style={[styles.centerRow, {marginTop:5}]}>
-                            <Text>Sync {this.state.syncStatus}</Text>
+                            <Text style={[this.getColorForSyncStatus(), {fontSize:20}]}>Sync {this.state.syncStatus}</Text>
                         </View>
+                        {(this.state.syncStatus === "In Progress" ? <View style={styles.centerRow}>
+                            <ActivityIndicator />
+                        </View> : null)}
                     </View> : null }
-                    { this.state.syncStatus === "Complete" ?
-                    <View style={[styles.flexColumn, { margin:5, marginTop:30 }]}>
-                        <Text>Great!  Your data is all synced with the website.  Use the menu to return to where you were.</Text>
-                    </View> : null }
+                    <View style={[styles.centerRow, { margin:5, marginTop:30 }]}>
+                        <Text>{this.getTextForSyncStatus()}</Text>
+                    </View>
                 </View>);
     }
 }

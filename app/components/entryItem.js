@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker } from 'react-native';
+import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, Alert, BackAndroid } from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Reactotron from 'reactotron-react-native';
@@ -49,7 +49,9 @@ export default class EntryItem extends Component {
 
     getFieldOptionText(fieldOptionId)
     {
-        return this.props.fieldOptions.find(a => a.fieldOptionId === fieldOptionId).text;
+        let t = this.props.fieldOptions.find(a => a.fieldOptionId === fieldOptionId);
+        if (t) return t.text;
+        else return fieldOptionId;
     }
 
     formatDate(date) {
@@ -64,7 +66,7 @@ export default class EntryItem extends Component {
        var monthIndex = d.getMonth();
        var year = d.getFullYear();
 
-       return ('0' + day).slice(-2) + '-' + monthNames[monthIndex].substring(0,3) + '-' + year;
+       return ('0' + day).slice(-2) + ' ' + monthNames[monthIndex] + ' ' + year;
      }
 
     expandedRow(){
@@ -76,7 +78,7 @@ export default class EntryItem extends Component {
                         <TouchableOpacity style={{width:30}} onPress={() => this.goToEdit()}>
                             <Icon name="pencil-square-o" size={20} color="#000000" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width:30}} onPress={() => this.deleteEntry()}>
+                        <TouchableOpacity style={{width:30}} onPress={() => { this.confirmDelete()}}>
                             <Icon name="trash" size={20} color="#000000" />
                         </TouchableOpacity>
                     </View>
@@ -107,11 +109,23 @@ export default class EntryItem extends Component {
          this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: this.props.entry } });
     }
 
+    confirmDelete() {
+        return Alert.alert(
+        'Confirm',
+        'Are you sure you want to delete this entry?',
+        [
+            {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+            {text: 'Delete', onPress: () => this.deleteEntry()},
+        ],
+        { cancelable: false }
+        )
+    }
+
     render() {
         return (
             <View style={{backgroundColor:this.getAlternatingRowColor()}}>
                 <View style={[styles.leftRow, { padding: 5 }]}>
-                    <Text style={{width:'35%', fontSize:12, fontWeight:'bold'}}>{this.formatDate(this.props.entry.date)}</Text>
+                    <Text style={{width:'40%', fontSize:12, fontWeight:'bold'}}>{this.formatDate(this.props.entry.date)}</Text>
                     <Text style={{flex:1, fontSize:12, fontWeight:'bold'}}>{this.getActivityName(this.props.entry.activityId)}</Text>
                     <TouchableOpacity style={{width:20}} onPress={() => this.toggleExpand()}>
                         <Icon name={this.state.expanded ? "chevron-up" : "chevron-down"} size={12} color="#000000" />

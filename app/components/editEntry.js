@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, TextInput, ScrollView, Button} from 'react-native';
+import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, TextInput, ScrollView, Button, BackHandler} from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Header from '../containers/header'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -34,7 +34,18 @@ export default class EditEntry extends Component {
             this.loadNewFromEntry(this.props.navigation.state.params.entry);
         }        
     }
+
+    componentDidMount() {
+    BackHandler.addEventListener('backPress', () => {
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Logbooks', props: { selectedLogbookId: this.state.selectedLogbookId } });  
+      return true
+    })
+  }
     
+  componentWillUnmount() {
+    BackHandler.removeEventListener('backPress')
+  }
+
     loadNewFromEntry(entry)
     {
         this.state.editMode='Add';
@@ -217,7 +228,7 @@ export default class EditEntry extends Component {
         entry.activityId = this.state.activityId;
         entry.notes = this.state.notes;
         entry.date = this.state.date;
-        entry.selectedFieldOptions = this.state.selectedFieldOptions.map((option) => { return { fieldId: option.fieldId, fieldOptionId: option.fieldOptionId }; })
+        entry.selectedFieldOptions = this.state.selectedFieldOptions.filter(a => a.fieldOptionId !== "Custom").map((option) => { return { fieldId: option.fieldId, fieldOptionId: option.fieldOptionId }; })
         entry.fieldCustomValues = this.state.fieldCustomValues.map((customValue) => { return { fieldId: customValue.fieldId, customValue: customValue.customValue }; })
         
         if (this.state.editMode === "Add")
