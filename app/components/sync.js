@@ -82,7 +82,7 @@ export default class Sync extends Component{
                             The sync process uploads new data in this app to the website, and downloads any new data from the website.
                         </Text>
                         <Text style={{fontSize:12, fontWeight: 'bold'}}>
-                            You should sync regularly even if you do not use the website, otherwise you risk losing your logs if your device is damaged or lost.
+                            You should sync regularly even if you do not use the website, to avoid the risk of losing your data.
                         </Text>
                     </View>
                     <View style={[styles.centerRow, { marginLeft:10, marginRight:10, marginTop:20, padding:15, borderWidth:1, borderColor:'#dddddd' }]}>                                                

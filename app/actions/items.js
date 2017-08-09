@@ -214,6 +214,14 @@ export function deleteEntry(entry)
             };
 }
 
+export function updateLastSynced()
+{
+    return {
+                type: 'UPDATE_LAST_SYNCED',
+                lastSyncedDate: new Date()
+            };
+}
+
 export function megaSync(userId, entries, logbooks, callback)
 {
      return (dispatch) => {
@@ -235,6 +243,7 @@ export function megaSync(userId, entries, logbooks, callback)
                 dispatch(loadActivities(data.activities));
                 dispatch(loadFields(data.fields));
                 dispatch(loadFieldOptions(data.fieldOptions));
+                dispatch(updateLastSynced());
             }
             callback(data);
       })

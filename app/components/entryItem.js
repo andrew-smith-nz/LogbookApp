@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, Alert, BackAndroid } from 'react-native';
+import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, Alert } from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Reactotron from 'reactotron-react-native';
@@ -124,13 +124,13 @@ export default class EntryItem extends Component {
     render() {
         return (
             <View style={{backgroundColor:this.getAlternatingRowColor()}}>
-                <View style={[styles.leftRow, { padding: 5 }]}>
-                    <Text style={{width:'40%', fontSize:12, fontWeight:'bold'}}>{this.formatDate(this.props.entry.date)}</Text>
-                    <Text style={{flex:1, fontSize:12, fontWeight:'bold'}}>{this.getActivityName(this.props.entry.activityId)}</Text>
-                    <TouchableOpacity style={{width:20}} onPress={() => this.toggleExpand()}>
+                <TouchableOpacity onPress={() => this.toggleExpand()}>
+                    <View style={[styles.leftRow, { padding: 5 }]}>
+                        <Text style={{width:'40%', fontSize:12, fontWeight:'bold'}}>{this.formatDate(this.props.entry.date)}</Text>
+                        <Text style={{flex:1, fontSize:12, fontWeight:'bold'}}>{this.getActivityName(this.props.entry.activityId)}</Text>
                         <Icon name={this.state.expanded ? "chevron-up" : "chevron-down"} size={12} color="#000000" />
-                    </TouchableOpacity>
-                </View>
+                    </View>
+                </TouchableOpacity>
                 {(this.state.expanded) ? this.expandedRow() : null}
             </View>
             );

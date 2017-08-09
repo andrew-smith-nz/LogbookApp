@@ -1,6 +1,6 @@
 import Reactotron from 'reactotron-react-native';
 
-export function loadEntries(state = { logbookEntries: [] }, action)
+export function loadEntries(state = { logbookEntries: [], activeLogbookId: null }, action)
 {
     switch (action.type)
     {
@@ -11,7 +11,8 @@ export function loadEntries(state = { logbookEntries: [] }, action)
             let entries = state.logbookEntries;
             entries.push(action.entry);
             return { 
-                logbookEntries: entries
+                logbookEntries: entries,
+                activeLogbookId: action.entry.logbookId
             }
         }
          case 'UPDATE_ENTRY':
@@ -26,6 +27,7 @@ export function loadEntries(state = { logbookEntries: [] }, action)
                         newEntries.push(entries[i]);
                 }
             return { 
+                ...state, 
                 logbookEntries: newEntries
             }
         }
@@ -40,6 +42,7 @@ export function loadEntries(state = { logbookEntries: [] }, action)
                     newEntries.push(entries[i]);
                 }
             return { 
+                ...state, 
                 logbookEntries: newEntries
             }
         }
@@ -87,6 +90,17 @@ export function loadFieldOptions(state = { fieldOptions: [] }, action)
     {
         case 'LOAD_FIELDOPTIONS':
             return { fieldOptions: action.fieldOptions }
+        default:
+            return state;
+    }
+}
+
+export function sync(state={lastSyncedDate: null}, action)
+{
+    switch (action.type)
+    {
+        case 'UPDATE_LAST_SYNCED':
+            return { lastSyncedDate: action.lastSyncedDate }
         default:
             return state;
     }

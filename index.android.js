@@ -34,6 +34,7 @@ export default class LogbookNew extends Component {
   constructor(props){
     super(props);
         this.state = { rehydrated: false }
+        Reactotron.configure({ host: '192.168.0.101' }).connect()
     }
   componentWillMount(){
     const persistor = persistStore(store, {storage: AsyncStorage, blacklist: ['ping', 'isLoggingIn', 'navReducer']}, () => { this.setState({ rehydrated: true })});
