@@ -1,0 +1,95 @@
+Incremental java compilation is an incubating feature.
+:app:preBuild UP-TO-DATE
+:app:preReleaseBuild UP-TO-DATE
+:app:checkReleaseManifest
+:app:preDebugBuild UP-TO-DATE
+:react-native-vector-icons:preBuild UP-TO-DATE
+:react-native-vector-icons:preReleaseBuild UP-TO-DATE
+:react-native-vector-icons:checkReleaseManifest
+:react-native-vector-icons:preDebugAndroidTestBuild UP-TO-DATE
+:react-native-vector-icons:preDebugBuild UP-TO-DATE
+:react-native-vector-icons:preDebugUnitTestBuild UP-TO-DATE
+:react-native-vector-icons:preReleaseUnitTestBuild UP-TO-DATE
+:react-native-vector-icons:prepareComAndroidSupportAppcompatV72301Library UP-TO-DATE
+:react-native-vector-icons:prepareComAndroidSupportSupportV42301Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookFbuiTextlayoutbuilderTextlayoutbuilder100Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookFrescoDrawee101Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookFrescoFbcore101Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookFrescoFresco101Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookFrescoImagepipeline101Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookFrescoImagepipelineBase101Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookFrescoImagepipelineOkhttp3101Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookReactReactNative0464Library UP-TO-DATE
+:react-native-vector-icons:prepareComFacebookSoloaderSoloader010Library UP-TO-DATE
+:react-native-vector-icons:prepareOrgWebkitAndroidJscR174650Library UP-TO-DATE
+:react-native-vector-icons:prepareReleaseDependencies
+:react-native-vector-icons:compileReleaseAidl UP-TO-DATE
+:react-native-vector-icons:compileReleaseNdk UP-TO-DATE
+:react-native-vector-icons:compileLint UP-TO-DATE
+:react-native-vector-icons:copyReleaseLint UP-TO-DATE
+:react-native-vector-icons:compileReleaseRenderscript UP-TO-DATE
+:react-native-vector-icons:generateReleaseBuildConfig UP-TO-DATE
+:react-native-vector-icons:generateReleaseResValues UP-TO-DATE
+:react-native-vector-icons:generateReleaseResources UP-TO-DATE
+:react-native-vector-icons:mergeReleaseResources UP-TO-DATE
+:react-native-vector-icons:processReleaseManifest UP-TO-DATE
+:react-native-vector-icons:processReleaseResources UP-TO-DATE
+:react-native-vector-icons:generateReleaseSources UP-TO-DATE
+:react-native-vector-icons:incrementalReleaseJavaCompilationSafeguard UP-TO-DATE
+:react-native-vector-icons:compileReleaseJavaWithJavac UP-TO-DATE
+:react-native-vector-icons:extractReleaseAnnotations UP-TO-DATE
+:react-native-vector-icons:mergeReleaseShaders UP-TO-DATE
+:react-native-vector-icons:compileReleaseShaders UP-TO-DATE
+:react-native-vector-icons:generateReleaseAssets UP-TO-DATE
+:react-native-vector-icons:mergeReleaseAssets UP-TO-DATE
+:react-native-vector-icons:mergeReleaseProguardFiles UP-TO-DATE
+:react-native-vector-icons:packageReleaseRenderscript UP-TO-DATE
+:react-native-vector-icons:packageReleaseResources UP-TO-DATE
+:react-native-vector-icons:processReleaseJavaRes UP-TO-DATE
+:react-native-vector-icons:transformResourcesWithMergeJavaResForRelease UP-TO-DATE
+:react-native-vector-icons:transformClassesAndResourcesWithSyncLibJarsForRelease UP-TO-DATE
+:react-native-vector-icons:mergeReleaseJniLibFolders UP-TO-DATE
+:react-native-vector-icons:transformNative_libsWithMergeJniLibsForRelease UP-TO-DATE
+:react-native-vector-icons:transformNative_libsWithSyncJniLibsForRelease UP-TO-DATE
+:react-native-vector-icons:bundleRelease UP-TO-DATE
+:app:prepareComAndroidSupportAppcompatV72301Library UP-TO-DATE
+:app:prepareComAndroidSupportSupportV42301Library UP-TO-DATE
+:app:prepareComFacebookFbuiTextlayoutbuilderTextlayoutbuilder100Library UP-TO-DATE
+:app:prepareComFacebookFrescoDrawee101Library UP-TO-DATE
+:app:prepareComFacebookFrescoFbcore101Library UP-TO-DATE
+:app:prepareComFacebookFrescoFresco101Library UP-TO-DATE
+:app:prepareComFacebookFrescoImagepipeline101Library UP-TO-DATE
+:app:prepareComFacebookFrescoImagepipelineBase101Library UP-TO-DATE
+:app:prepareComFacebookFrescoImagepipelineOkhttp3101Library UP-TO-DATE
+:app:prepareComFacebookReactReactNative0464Library UP-TO-DATE
+:app:prepareComFacebookSoloaderSoloader010Library UP-TO-DATE
+:app:prepareLogbookReactNativeVectorIconsUnspecifiedLibrary UP-TO-DATE
+:app:prepareOrgWebkitAndroidJscR174650Library UP-TO-DATE
+:app:prepareReleaseDependencies
+:app:compileReleaseAidl
+:app:compileReleaseRenderscript
+:app:generateReleaseBuildConfig
+:app:mergeReleaseShaders
+:app:compileReleaseShaders
+:app:generateReleaseAssets
+:app:mergeReleaseAssets
+:app:generateReleaseResValues
+:app:generateReleaseResources
+:app:mergeReleaseResources
+:app:bundleReleaseJsAndAssets
+Scanning 614 folders for symlinks in C:\Dev\Apps\Logbook\node_modules (66ms)
+Scanning 614 folders for symlinks in C:\Dev\Apps\Logbook\node_modules (42ms)
+Loading dependency graph, done.
+warning: the transform cache was reset.
+bundle: start
+bundle: finish
+bundle: Writing bundle output to: C:\Dev\Apps\Logbook\android\app\build\intermediates\assets\release\index.android.bundle
+bundle: Done writing bundle output
+bundle: Copying 9 asset files
+bundle: Done copying assets
+:app:processReleaseManifest
+:app:processReleaseResources FAILED
+
+BUILD FAILED
+
+Total time: 2 mins 8.846 secs

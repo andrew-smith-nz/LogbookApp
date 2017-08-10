@@ -54,8 +54,9 @@ export default class EditEntry extends Component {
     {
         this.state.editMode='Add';
         this.state.selectedLogbookId = entry.logbookId;
-         let logbook = this.props.logbooks.find((a) => a.logbookId === entry.logbookId);
-         this.state.activityId = logbook.defaultActivityId;
+        let logbook = this.props.logbooks.find((a) => a.logbookId === entry.logbookId);
+        if (!logbook) logbook = this.props.logbooks[0];
+        this.state.activityId = logbook.defaultActivityId;
     }
 
     loadEditFromEntry(entry)
