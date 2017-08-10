@@ -106,7 +106,7 @@ export default class EntryItem extends Component {
 
     goToEdit()
     {
-         this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: this.props.entry } });
+         this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: this.props.entry }, returnNav: 'Logbooks' });
     }
 
     confirmDelete() {

@@ -59,7 +59,7 @@ export default class Logbooks extends Component {
     }
 
     newEntry(){
-        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: { logbookId: this.state.selectedLogbookId } } });
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: { logbookId: this.state.selectedLogbookId }, returnNav: 'Logbooks' } });
     }
 
     setSelectedLogbook(logbookId)

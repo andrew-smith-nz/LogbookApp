@@ -1,4 +1,4 @@
-package com.logbooknew;
+package com.theoutdoorlogbook.logbook;
 
 import android.app.Application;
 

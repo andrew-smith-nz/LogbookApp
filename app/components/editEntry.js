@@ -18,10 +18,10 @@ export default class EditEntry extends Component {
         this.loadNewFromEntry = this.loadNewFromEntry.bind(this)
         this.getFieldName = this.getFieldName.bind(this)
         this.getFieldOptionText = this.getFieldOptionText.bind(this);
+        this.cancelNavigate = this.cancelNavigate.bind(this);
         this.state = {  activityId: this.props.logbooks[0].defaultActivityId, 
                         selectedFieldOptions: [], 
                         fieldCustomValues: [], 
-                        selectedLogbookId: this.props.logbooks[0].logbookId, 
                         editMode: 'Add',
                         date: new Date()};
     
@@ -33,13 +33,17 @@ export default class EditEntry extends Component {
         {
             this.loadNewFromEntry(this.props.navigation.state.params.entry);
         }        
+        if (!this.state.selectedLogbookId)
+        {
+            this.state.selectedLogbookId = this.props.logbooks[0].logbookId;
+        }
     }
 
     componentDidMount() {
-    BackHandler.addEventListener('backPress', () => {
-        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Logbooks', props: { selectedLogbookId: this.state.selectedLogbookId } });  
-      return true
-    })
+        BackHandler.addEventListener('backPress', () => {
+            this.cancelNavigate();
+            return true;
+        })
   }
     
   componentWillUnmount() {
@@ -50,6 +54,8 @@ export default class EditEntry extends Component {
     {
         this.state.editMode='Add';
         this.state.selectedLogbookId = entry.logbookId;
+         let logbook = this.props.logbooks.find((a) => a.logbookId === entry.logbookId);
+         this.state.activityId = logbook.defaultActivityId;
     }
 
     loadEditFromEntry(entry)
@@ -62,6 +68,11 @@ export default class EditEntry extends Component {
         this.state.date = new Date(entry.date);
         this.state.fieldCustomValues = entry.fieldCustomValues;
         this.state.selectedFieldOptions = entry.selectedFieldOptions;
+        for (i = 0; i < this.state.fieldCustomValues.length; i++)
+            {
+                this.state.selectedFieldOptions.push({fieldId: entry.fieldCustomValues[i].fieldId, fieldOptionId: 'Custom'});
+            }
+        Reactotron.log(this.state.fieldCustomValues);
     }
 
     getActivityPickerItems()
@@ -153,6 +164,15 @@ export default class EditEntry extends Component {
                         fieldOptionId: value,
                     });
         this.setState({selectedFieldOptions: a});
+        // remove custom option if it exists
+
+        var b = this.state.fieldCustomValues.slice();
+        var customItem = b.find(x => x.fieldId == fieldId);
+        if (customItem)
+        {
+            b.splice(b.indexOf(customItem), 1);
+            this.setState({fieldCustomValues: b});
+        }
     }
 
      getSelectedFieldValue (fieldId) {
@@ -207,12 +227,8 @@ export default class EditEntry extends Component {
         return a ? a.customValue : "";
      }
 
-     getEntryFromStorage(logbookEntryId){
-
-     }
-
      setDefaultActivity(logbookId){
-         let logbook = this.state.logbooks.find((a) => a.logbookId === logbookId);
+         let logbook = this.props.logbooks.find((a) => a.logbookId === logbookId);
          this.setState({activityId: logbook.defaultActivityId});
      }
 
@@ -246,6 +262,11 @@ export default class EditEntry extends Component {
         this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Logbooks', props: { selectedLogbookId: this.state.selectedLogbookId } });  
      }
 
+     cancelNavigate() {         
+         Reactotron.log(this.props.navigation.state.params)
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: this.props.navigation.state.params.returnNav, props: { selectedLogbookId: this.state.selectedLogbookId } });  
+     }
+
     render(){
         return <View>
                     <ScrollView>
@@ -253,7 +274,7 @@ export default class EditEntry extends Component {
                     <View style={{padding:5}}>
                         <View style={[styles.leftRow, {padding:5}]}>
                             <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}}>Logbook</Text>
-                            <Picker style={{width:'70%'}} selectedValue={this.state.selectedLogbookId} onValueChange={(itemValue, itemIndex) => { this.setState({selectedLogbookId: itemValue}); setDefaultActivity(itemValue); }}>
+                            <Picker style={{width:'70%'}} selectedValue={this.state.selectedLogbookId} onValueChange={(itemValue, itemIndex) => { this.setState({selectedLogbookId: itemValue}); this.setDefaultActivity(itemValue); }}>
                                 {this.buildLogbookPicker()}
                             </Picker>
                         </View>
@@ -291,7 +312,7 @@ export default class EditEntry extends Component {
                             <Button title={this.state.editMode === "Add"? "Create" : "Save"} color='#4682b4' onPress={() => {this.save()}} />
                         </View>
                         <View style={{padding:5}}>
-                            <Button title="Cancel" color='#4682b4' onPress={() => {}} />
+                            <Button title="Cancel" color='#4682b4' onPress={() => { this.cancelNavigate() }} />
                         </View>
                     </View>
                     </ScrollView>

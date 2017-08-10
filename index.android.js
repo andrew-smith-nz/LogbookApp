@@ -29,7 +29,7 @@ import AppWithNavigationState from './app/navigator/appNavigator';
 
 let store = createStore(rootReducer, compose(applyMiddleware(thunk), autoRehydrate({log:true})));
 
-export default class LogbookNew extends Component {
+export default class Logbook extends Component {
 
   constructor(props){
     super(props);
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
 
 });
 
-AppRegistry.registerComponent('LogbookNew', () => LogbookNew);
+AppRegistry.registerComponent('Logbook', () => Logbook);

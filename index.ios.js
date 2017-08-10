@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-export default class LogbookNew extends Component {
+export default class Logbook extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('LogbookNew', () => LogbookNew);
+AppRegistry.registerComponent('Logbook', () => LogbookNew);

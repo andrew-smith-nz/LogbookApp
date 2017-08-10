@@ -38,7 +38,7 @@ export default class Home extends Component {
     }
 
     newEntry(){
-        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: { logbookId: this.props.activeLogbookId } } });
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: { logbookId: this.props.activeLogbookId }, returnNav: 'Home'  } });
     }
 
     goToSync(){
@@ -93,8 +93,8 @@ export default class Home extends Component {
                         <View style={[styles.centerRow, {marginTop:20}]}>
                             <Text>You have {unsyncedCount} unsynced entr{unsyncedCount === 1 ? 'y': 'ies'}.</Text>
                         </View>
-                        <View style={[styles.centerRow, {marginTop:10}]}>
-                            <Text style={syncNeeded ? { color:'red' } : {color:'green'}}>
+                        <View style={[styles.centerRow, {margin:10, justifyContent:'center'}]}>
+                            <Text style={[syncNeeded ? { color:'red' } : {color:'green'}, {textAlign:'center'}]}>
                                 {everSynced ? "Your last sync was " + sinceSyncedText + " ago." : "You have not synced your data since installing the app."}
                             </Text>
                         </View>
