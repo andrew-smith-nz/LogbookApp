@@ -79,28 +79,32 @@ export default class Home extends Component {
         return  <View>
                     <Header navigation={this.props.navigation} title="Home" />
                     <View style={[styles.flexColumn, {margin:10, height:'20%', backgroundColor:'#dae7f1'}]} >
-                        <View style={[styles.centerRow, {marginTop:20}]}>
-                            <Text style={{fontSize:18}}>Logbook Summary</Text>
-                        </View>
-                        <View style={[styles.centerRow, {marginTop:20}]}>
-                            <Text>You have {this.props.entries.length} entr{this.props.entries.length === 1 ? 'y': 'ies'} in {this.props.logbooks.length} logbook{this.props.logbooks.length === 1 ? "" : "s"}.</Text>
-                        </View>
-                        </View>
+                        <TouchableOpacity onPress={() => this.props.dispatch({type: 'NAVIGATE_TO', routeName:'Logbooks'})}>
+                            <View style={[styles.centerRow, {marginTop:20}]}>
+                                <Text style={{fontSize:18}}>Logbook Summary</Text>
+                            </View>
+                            <View style={[styles.centerRow, {marginTop:20}]}>
+                                <Text>You have {this.props.entries.length} entr{this.props.entries.length === 1 ? 'y': 'ies'} in {this.props.logbooks.length} logbook{this.props.logbooks.length === 1 ? "" : "s"}.</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                     <View style={[styles.flexColumn, {margin:10, height:'35%', backgroundColor:'#dae7f1'}]} >
-                        <View style={[styles.centerRow, {marginTop:20}]}>
-                            <Text style={{fontSize:18}}>Sync Summary</Text>
-                        </View>
-                        <View style={[styles.centerRow, {marginTop:20}]}>
-                            <Text>You have {unsyncedCount} unsynced entr{unsyncedCount === 1 ? 'y': 'ies'}.</Text>
-                        </View>
-                        <View style={[styles.centerRow, {margin:10, justifyContent:'center'}]}>
-                            <Text style={[syncNeeded ? { color:'red' } : {color:'green'}, {textAlign:'center'}]}>
-                                {everSynced ? "Your last sync was " + sinceSyncedText + " ago." : "You have not synced your data since installing the app."}
-                            </Text>
-                        </View>
-                        <View style={[styles.centerRow, {marginTop:10}]}>
-                            {syncNeeded ? <Button title="Sync Now" onPress={() => this.goToSync()}></Button> : null}
-                        </View>
+                        <TouchableOpacity onPress={() => this.props.dispatch({type: 'NAVIGATE_TO', routeName:'Sync'})}>
+                            <View style={[styles.centerRow, {marginTop:20}]}>
+                                <Text style={{fontSize:18}}>Sync Summary</Text>
+                            </View>
+                            <View style={[styles.centerRow, {marginTop:20}]}>
+                                <Text>You have {unsyncedCount} unsynced entr{unsyncedCount === 1 ? 'y': 'ies'}.</Text>
+                            </View>
+                            <View style={[styles.centerRow, {margin:10, justifyContent:'center'}]}>
+                                <Text style={[syncNeeded ? { color:'red' } : {color:'green'}, {textAlign:'center'}]}>
+                                    {everSynced ? "Your last sync was " + sinceSyncedText + " ago." : "You have not synced your data since installing the app."}
+                                </Text>
+                            </View>
+                            <View style={[styles.centerRow, {marginTop:10}]}>
+                                {syncNeeded ? <Button title="Sync Now" onPress={() => this.goToSync()}></Button> : null}
+                            </View>
+                        </TouchableOpacity>
                     </View>
 
                     <TouchableOpacity onPress={() => this.newEntry()}>

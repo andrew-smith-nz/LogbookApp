@@ -47,6 +47,11 @@ export default class EntryItem extends Component {
         return this.props.fields.find(a => a.fieldId === fieldId).name;
     }
 
+    getFieldSortOrder(fieldId)
+    {
+        return this.props.fields.find(a => a.fieldId === fieldId).sortOrder;
+    }
+
     getFieldOptionText(fieldOptionId)
     {
         let t = this.props.fieldOptions.find(a => a.fieldOptionId === fieldOptionId);
@@ -70,6 +75,17 @@ export default class EntryItem extends Component {
      }
 
     expandedRow(){
+        let orderedFields = this.props.entry.selectedFieldOptions.map( (ss, i) => {
+                    return { sortOrder: this.getFieldSortOrder(ss.fieldId), jsx: <View key={"vvv" + i} style={styles.leftRow}>
+                                <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
+                                <Text style={{width:'60%'}} key={'ft' + i}>{this.getFieldOptionText(ss.fieldOptionId)}</Text>
+                            </View> }});
+        orderedFields = orderedFields.concat(this.props.entry.fieldCustomValues.map( (ss, i) => {
+                    return { sortOrder: this.getFieldSortOrder(ss.fieldId), jsx: <View key={"vvvv" + i} style={styles.leftRow}>
+                                <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
+                                <Text style={{width:'60%'}} key={'ft' + i}>{ss.customValue}</Text>
+                            </View> }}));
+
         return (
             <View style={[styles.flexColumn, {padding:5}]}>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
@@ -83,18 +99,7 @@ export default class EntryItem extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {this.props.entry.selectedFieldOptions.map( (ss, i) => {
-                    return <View key={"vvv" + i} style={styles.leftRow}>
-                                <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
-                                <Text style={{width:'60%'}} key={'ft' + i}>{this.getFieldOptionText(ss.fieldOptionId)}</Text>
-                            </View>
-                })}
-                {this.props.entry.fieldCustomValues.map( (ss, i) => {
-                    return <View key={"vvv" + i} style={styles.leftRow}>
-                                <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
-                                <Text style={{width:'60%'}} key={'ft' + i}>{ss.customValue}</Text>
-                            </View>
-                })}
+                {orderedFields.sort(function(a,b) { return a.sortOrder - b.sortOrder }).map(o => o.jsx)}
             </View> 
         );
     }

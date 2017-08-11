@@ -310,7 +310,7 @@ export default class EditEntry extends Component {
                             {this.getFields()}
                         </View>
                         <View style={{padding:5}}>
-                            <Button title={this.state.editMode === "Add"? "Create" : "Save"} color='#4682b4' onPress={() => {this.save()}} />
+                            <Button title={this.state.editMode === "Add"? "Add" : "Save"} color='#4682b4' onPress={() => {this.save()}} />
                         </View>
                         <View style={{padding:5}}>
                             <Button title="Cancel" color='#4682b4' onPress={() => { this.cancelNavigate() }} />

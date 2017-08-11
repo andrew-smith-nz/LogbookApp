@@ -31,12 +31,12 @@ export default class Sync extends Component{
 
     displayConnectionStatus(connectionStatus){
         if (connectionStatus == true)
-            return <Text>Internet connection status: <Text style={{color:'green'}}>Connected</Text></Text>;
+            return <Text>Server connection status: <Text style={{color:'green'}}>Connected</Text></Text>;
         else if (connectionStatus == false)
-            return <View style={[styles.flexColumn, {alignItems:'center'}]}><Text>Internet connection status: <Text style={{color:'red'}}>Not Connected</Text></Text>
-            <Text style={{marginTop:10, fontWeight:'bold'}}>Syncing requires an internet connection</Text></View>;
+            return <View style={[styles.flexColumn, {alignItems:'center'}]}><Text>Server connection status: <Text style={{color:'red'}}>Not Connected</Text></Text>
+            <Text style={{marginTop:10, fontWeight:'bold'}}>Syncing requires a connection to the server</Text></View>;
         else
-            return <View style={styles.centerRow}><Text>Checking internet connection: </Text><ActivityIndicator /></View>;
+            return <View style={styles.centerRow}><Text>Checking connection to server: </Text><ActivityIndicator /></View>;
     }
 
     doSync(){
