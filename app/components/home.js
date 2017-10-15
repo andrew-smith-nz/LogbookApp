@@ -60,7 +60,7 @@ export default class Home extends Component {
         if (this.props.lastSyncedDate)
         {
             let minutesSinceSynced = Math.floor((new Date() - new Date(this.props.lastSyncedDate)) / (1000*60));
-            syncNeeded = minutesSinceSynced < 60*24*7;
+            syncNeeded = minutesSinceSynced > 60*24*7;
             if (minutesSinceSynced > 24 * 60)
                 sinceSyncedText = Math.floor(minutesSinceSynced / 24 * 60) + (Math.floor(minutesSinceSynced / 24 * 60) === 1 ? " day" : " days");
             else if (minutesSinceSynced < 60)
