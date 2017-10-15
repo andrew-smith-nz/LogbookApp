@@ -8,8 +8,8 @@ export default class Login extends Component {
   constructor(props){
     super(props);
     this.state = { 
-        email: '',
-        password: '',
+        email: 'vulpesnz@gmail.com',
+        password: 'ajs123',
         userId: '',
         loggingIn: false,
     };
@@ -52,7 +52,8 @@ export default class Login extends Component {
         </View>
         <View style={[styles.centerRow, {paddingTop:20}]} >
           {(this.props.loggingIn) ? <View style={styles.centerRow}><Text style={{marginBottom:5}}>Logging in... </Text><ActivityIndicator /></View> :
-          <Button title="Log In" color='#4682b4' onPress={() => this.props.tryLogin(this.state.email, this.state.password) }  // TODO: un-hardcode
+          <Button title="Log In" color='#4682b4' onPress={() => this.props.tryLogin('vulpesnz@gmail.com', 'ajs123') }  // TODO: un-hardcode
+          //<Button title="Log In" color='#4682b4' onPress={() => this.props.tryLogin(this.state.email, this.state.password) }  // TODO: un-hardcode
                   //disabled={this.state.email === '' || this.state.password === '' }/>}
                   />}
         </View>

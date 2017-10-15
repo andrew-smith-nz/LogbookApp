@@ -11,6 +11,7 @@ import {
   Text,
   View,
   AsyncStorage,
+  Image
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
@@ -22,7 +23,6 @@ import {persistStore, autoRehydrate} from 'redux-persist'
 import './reactotronConfig';
 import Reactotron from 'reactotron-react-native'
 
-
 import { DrawerNavigator, addNavigationHelpers } from "react-navigation";
 
 import AppWithNavigationState from './app/navigator/appNavigator';
@@ -33,8 +33,9 @@ export default class Logbook extends Component {
 
   constructor(props){
     super(props);
-        this.state = { rehydrated: false }
-        Reactotron.configure({ host: '192.168.0.101' }).connect()
+        this.state = { rehydrated: false, showSplash: true }
+        Reactotron.configure({ host: '192.168.0.6' }).connect()
+        setTimeout(()=>{ this.setState({showSplash: false}); }, 1000);          
     }
   componentWillMount(){
     const persistor = persistStore(store, {storage: AsyncStorage, blacklist: ['ping', 'isLoggingIn', 'navReducer']}, () => { this.setState({ rehydrated: true })});
@@ -42,8 +43,15 @@ export default class Logbook extends Component {
   }
   
   render() {
-    if(!this.state.rehydrated){
-      return <Text>Loading...</Text>
+    if(this.state.showSplash){
+      return  <View style={{width:'100%', height:'100%', flexDirection:'column'}}>
+                <View style={{width:'100%', height:'70%', alignItems:'center', justifyContent:'center'}}>
+                  <Image source={require("./img/logo_large.png")} style={{width:'80%', height:'80%', resizeMode:'contain'}} />
+                </View>
+                <View style={{width:'100%', height:'30%', alignItems:'center', justifyContent:'center'}}>
+                  <Text>[Add Copyright Notice]</Text>
+                </View>
+              </View>
     }
     return (
       <Provider store={store}>

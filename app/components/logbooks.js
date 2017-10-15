@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, ScrollView, Button} from 'react-native';
+import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, FlatList, Button} from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Header from '../containers/header'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,17 +9,18 @@ import Reactotron from 'reactotron-react-native'
 export default class Logbooks extends Component {
     constructor(props) {
         super(props);
-        this.buildLogbookPicker = this.buildLogbookPicker.bind(this)
+        this.buildActivityPicker = this.buildActivityPicker.bind(this)
         this.showEntriesForLogbook = this.showEntriesForLogbook.bind(this)
-        this.setSelectedLogbook = this.setSelectedLogbook.bind(this)
-        this.forceRender = this.forceRender.bind(this)
+        this.setSelectedActivity = this.setSelectedActivity.bind(this)
+        this.forceRender = this.forceRender.bind(this);
+        this.formatEntry = this.formatEntry.bind(this);
 
-        let selectedLogbookId = this.props.logbooks[0].logbookId
-        if (this.props.navigation.state.params && this.props.navigation.state.params.selectedLogbookId)
+        let selectedActivityId = this.props.activities[0].activityId;
+        if (this.props.navigation.state.params && this.props.navigation.state.params.selectedActivityId)
         {
-            selectedLogbookId = this.props.navigation.state.params.selectedLogbookId;
+            selectedActivityId = this.props.navigation.state.params.selectedActivityId;
         }  
-        this.state = { selectedLogbookId: selectedLogbookId, hasUnsynced: false };
+        this.state = { selectedActivityId: selectedActivityId, hasUnsynced: false };
     }
 
     static navigationOptions = {
@@ -31,12 +32,13 @@ export default class Logbooks extends Component {
 
     componentWillMount()
     {
-        this.setSelectedLogbook(this.state.selectedLogbookId);
+        this.setSelectedActivity(this.state.selectedActivityId);
     }
-
-    buildLogbookPicker()
+    
+    buildActivityPicker()
     {
-        return this.props.logbooks.map(a => { return (<Picker.Item label={a.name} value={a.logbookId} key={a.logbookId} />) });
+        Reactotron.log(this.props.activities);
+        return this.props.activities.map(a => { return (<Picker.Item label={a.activityName} value={a.activityId} key={a.activityId} />) });
     }
 
     showEntriesForLogbook()
@@ -44,7 +46,7 @@ export default class Logbooks extends Component {
         let entries = [];
         for (i = 0; i < this.props.entries.length; i++)
             {
-                if (this.props.entries[i].logbookId === this.state.selectedLogbookId 
+                if (this.props.entries[i].activityId === this.state.selectedActivityId 
                         && this.props.entries[i].syncStatus !== "DELETED") 
                 {
                     entries.push(this.props.entries[i]);
@@ -59,15 +61,20 @@ export default class Logbooks extends Component {
     }
 
     newEntry(){
-        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: { logbookId: this.state.selectedLogbookId }, returnNav: 'Logbooks' } });
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: { activityId: this.state.selectedActivityId }, returnNav: 'Logbooks' } });
     }
 
-    setSelectedLogbook(logbookId)
+    formatEntry(entry)
     {
-        this.setState({selectedLogbookId: logbookId, hasUnsynced:false});
+        return <EntryItem entry={entry.item} index={entry.index} key={entry.item.logbookEntryId} forceParentRender={this.forceRender} />
+    }
+
+    setSelectedActivity(activityId)
+    {
+        this.setState({selectedActivityId: activityId, hasUnsynced:false});
         for (i = 0; i < this.props.entries.length; i++)
         {
-            if (this.props.entries[i].logbookId === logbookId
+            if (this.props.entries[i].activityId === activityId
                     && this.props.entries[i].syncStatus !== "DELETED"
                     && this.props.entries[i].syncStatus !== "SYNCED")
                     {
@@ -77,13 +84,29 @@ export default class Logbooks extends Component {
         }
     }
 
+    getKey(item, index)
+    {
+        return item.logbookEntryId;
+    }
+
     render() {
-        return  <View>
+        let entries = [];
+        for (i = 0; i < this.props.entries.length; i++)
+            {
+                if (this.props.entries[i].activityId === this.state.selectedActivityId 
+                        && this.props.entries[i].syncStatus !== "DELETED") 
+                {
+                    entries.push(this.props.entries[i]);
+                }
+            }
+        entries = entries.sort(this.dateSort);
+        
+        return  <View style={{flexDirection:'column', height:'100%'}}>
                     <Header navigation={this.props.navigation} title="My Logbooks" />
-                    <View style={[styles.leftRow, {margin:5}]}>
-                        <Text>Logbook: </Text>
-                        <Picker style={{flex:1, height:30}} selectedValue={this.state.selectedLogbookId} onValueChange={(itemValue, itemIndex) => this.setSelectedLogbook(itemValue)}>
-                            {this.buildLogbookPicker()}
+                    <View style={[styles.leftRow, {margin:5, marginTop:10, marginBottom:10}]}>
+                        <Text style={{fontSize:16, paddingRight:10}}>Activity: </Text>
+                        <Picker style={{flex:1, height:30}} selectedValue={this.state.selectedActivityId} onValueChange={(itemValue, itemIndex) => this.setSelectedActivity(itemValue)}>
+                            {this.buildActivityPicker()}
                         </Picker>
                     </View>
                     <View style={styles.divider} />
@@ -91,11 +114,15 @@ export default class Logbooks extends Component {
                         <Button title="New Entry" color='#4682b4' onPress={() => {this.newEntry()}} />
                     </View>
                     { this.state.hasUnsynced ? <View style={{alignItems:'center', padding:10, paddingTop: 0, paddingBottom:5}}><Text style={{fontSize:10}}>Entries in yellow have not been synced with the server.</Text></View> : null}
-                    <ScrollView>
-                        <View>
-                            {this.showEntriesForLogbook()}
-                        </View>                        
-                    </ScrollView>
+                    <View style={[styles.leftRow, { padding: 5 }]}>
+                        <Text style={{width:'30%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Date</Text>
+                        <Text style={{width:'40%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Location</Text>
+                        <Text style={{width:'25%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Role</Text>
+                    </View>
+                    { entries.length === 0 ? <View style={{justifyContent:'center', alignItems:'center'}}>
+                        <Text style={{padding:5, paddingTop:20, fontSize:16}}>There are no entries in this logbook.</Text>
+                    </View> :
+                    <FlatList style={{flex:1}} data={entries} extraData={this.state} renderItem={this.formatEntry} keyExtractor={this.getKey} /> }
                 </View>
     }
 
@@ -113,6 +140,7 @@ export default class Logbooks extends Component {
 
     forceRender()
     {
-        this.forceUpdate();
+        this.setState({ updated: "true"})
+        this.setState({ updated: "false"})
     }
 }

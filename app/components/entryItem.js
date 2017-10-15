@@ -71,10 +71,10 @@ export default class EntryItem extends Component {
        var monthIndex = d.getMonth();
        var year = d.getFullYear();
 
-       return ('0' + day).slice(-2) + ' ' + monthNames[monthIndex] + ' ' + year;
+       return ('0' + day).slice(-2) + ' ' + monthNames[monthIndex].substring(0,3) + ' ' + year;
      }
 
-    expandedRow(){
+    expandedRow(){  
         let orderedFields = this.props.entry.selectedFieldOptions.map( (ss, i) => {
                     return { sortOrder: this.getFieldSortOrder(ss.fieldId), jsx: <View key={"vvv" + i} style={styles.leftRow}>
                                 <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
@@ -126,14 +126,28 @@ export default class EntryItem extends Component {
         )
     }
 
+    constructLocationText()
+    {
+        locationValue = this.props.entry.fieldCustomValues.find((e) => this.getFieldName(e.fieldId) == "Location");
+        return locationValue ? locationValue.customValue : "-";
+    }
+    
+    constructRoleText()
+    {
+        roleValue = this.props.entry.selectedFieldOptions.find((e) => this.getFieldName(e.fieldId) == "Role");
+        return roleValue ? this.getFieldOptionText(roleValue.fieldOptionId) : "-";
+    }
+
+
     render() {
         return (
-            <View style={{backgroundColor:this.getAlternatingRowColor()}}>
+            <View style={{paddingTop:5, paddingBottom:5, backgroundColor:this.getAlternatingRowColor()}}>
                 <TouchableOpacity onPress={() => this.toggleExpand()}>
                     <View style={[styles.leftRow, { padding: 5 }]}>
-                        <Text style={{width:'40%', fontSize:12, fontWeight:'bold'}}>{this.formatDate(this.props.entry.date)}</Text>
-                        <Text style={{flex:1, fontSize:12, fontWeight:'bold'}}>{this.getActivityName(this.props.entry.activityId)}</Text>
-                        <Icon name={this.state.expanded ? "chevron-up" : "chevron-down"} size={12} color="#000000" />
+                        <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}}>{this.formatDate(this.props.entry.date)}</Text>
+                        <Text style={{width:'40%', fontSize:14, fontWeight:'bold'}}>{this.constructLocationText()}</Text>
+                        <Text style={{width:'25%', fontSize:14, fontWeight:'bold'}}>{this.constructRoleText()}</Text>
+                        <Icon name={this.state.expanded ? "chevron-up" : "chevron-down"} size={14} color="#000000" style={{marginRight:5}} />
                     </View>
                 </TouchableOpacity>
                 {(this.state.expanded) ? this.expandedRow() : null}

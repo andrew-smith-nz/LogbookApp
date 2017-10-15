@@ -7,6 +7,7 @@ function mapStateToProps(state) { return {
     userId: state.login.userId, 
     logbooks: state.loadLogbooks.logbooks, 
     entries: state.loadEntries.logbookEntries, 
+    activities: state.loadActivities.activities
 }; }
 function mapDispatchToProps(dispatch) {  }
 

@@ -99,6 +99,7 @@ export function getActivities(userId, progressCallback)
        fetch(url)
            .then(function(data) { return data.json(); })
            .then(function(actualData) {
+              Reactotron.log(actualData);
               dispatch(loadActivities(actualData));
               progressCallback();
            }.bind(this))
@@ -224,6 +225,8 @@ export function updateLastSynced()
 
 export function megaSync(userId, entries, logbooks, callback)
 {
+    Reactotron.log(userId);
+    Reactotron.log(JSON.stringify({entries: entries.filter(e => e.syncStatus !== "SYNCED"), logbooks: logbooks.filter(l => l.syncStatus !== "SYNCED")}));
      return (dispatch) => {
     var url = 'http://www.theoutdoorlogbook.com/api/Upload/' + userId;
      return fetch(url, {

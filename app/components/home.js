@@ -60,7 +60,7 @@ export default class Home extends Component {
         if (this.props.lastSyncedDate)
         {
             let minutesSinceSynced = Math.floor((new Date() - new Date(this.props.lastSyncedDate)) / (1000*60));
-            syncNeeded = minutesSinceSynced > 60*24*7;
+            syncNeeded = minutesSinceSynced < 60*24*7;
             if (minutesSinceSynced > 24 * 60)
                 sinceSyncedText = Math.floor(minutesSinceSynced / 24 * 60) + (Math.floor(minutesSinceSynced / 24 * 60) === 1 ? " day" : " days");
             else if (minutesSinceSynced < 60)
@@ -84,7 +84,7 @@ export default class Home extends Component {
                                 <Text style={{fontSize:18}}>Logbook Summary</Text>
                             </View>
                             <View style={[styles.centerRow, {marginTop:20}]}>
-                                <Text>You have {this.props.entries.length} entr{this.props.entries.length === 1 ? 'y': 'ies'} in {this.props.logbooks.length} logbook{this.props.logbooks.length === 1 ? "" : "s"}.</Text>
+                                <Text>You have {this.props.entries.length} entr{this.props.entries.length === 1 ? 'y': 'ies'} over {this.props.logbooks.length} activit{this.props.logbooks.length === 1 ? "y" : "ies"}.</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -101,9 +101,11 @@ export default class Home extends Component {
                                     {everSynced ? "Your last sync was " + sinceSyncedText + " ago." : "You have not synced your data since installing the app."}
                                 </Text>
                             </View>
-                            <View style={[styles.centerRow, {marginTop:10}]}>
-                                {syncNeeded ? <Button title="Sync Now" onPress={() => this.goToSync()}></Button> : null}
-                            </View>
+                                {syncNeeded ? <TouchableOpacity onPress={() => this.goToSync()} style={{height: '30%', margin:20, backgroundColor:'#4682b4', alignItems:'center', justifyContent:'center'}}>
+                                    <View style={styles.centerRow}>
+                                        <Text style={{fontSize:24, color:'white', fontWeight:'bold'}}>SYNC NOW</Text>
+                                    </View>
+                            </TouchableOpacity> : null}
                         </TouchableOpacity>
                     </View>
 

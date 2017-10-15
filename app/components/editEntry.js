@@ -13,7 +13,6 @@ export default class EditEntry extends Component {
         this.getFields = this.getFields.bind(this);
         this.getActivityPickerItems = this.getActivityPickerItems.bind(this);
         this.getFieldOptions = this.getFieldOptions.bind(this);
-        this.buildLogbookPicker = this.buildLogbookPicker.bind(this)
         this.loadEditFromEntry = this.loadEditFromEntry.bind(this)
         this.loadNewFromEntry = this.loadNewFromEntry.bind(this)
         this.getFieldName = this.getFieldName.bind(this)
@@ -53,10 +52,9 @@ export default class EditEntry extends Component {
     loadNewFromEntry(entry)
     {
         this.state.editMode='Add';
-        this.state.selectedLogbookId = entry.logbookId;
+        this.state.activityId = entry.activityId;
         let logbook = this.props.logbooks.find((a) => a.logbookId === entry.logbookId);
         if (!logbook) logbook = this.props.logbooks[0];
-        this.state.activityId = logbook.defaultActivityId;
     }
 
     loadEditFromEntry(entry)
@@ -85,11 +83,11 @@ export default class EditEntry extends Component {
     {
         var uuid = require('react-native-uuid');
 
-            // check if custom field or picker field (or both?)
-            // for custom, just write a text box
-            // for picker, create it and call getFieldOptionPickerItems() to populate.
-            // if both, picker on top and custom textbox underneath, make sure that there's a 'custom' option in picker and it gets selecfted automatically if custom text box is populated.
-            //      likewise disable (do not clear, but do not save either) custom text box if any option other than 'custom' is selected.
+        // check if custom field or picker field (or both?)
+        // for custom, just write a text box
+        // for picker, create it and call getFieldOptionPickerItems() to populate.
+        // if both, picker on top and custom textbox underneath, make sure that there's a 'custom' option in picker and it gets selecfted automatically if custom text box is populated.
+        //      likewise disable (do not clear, but do not save either) custom text box if any option other than 'custom' is selected.
 
         return this.props.fields.map(field => {
             if (field.activityId !== this.state.activityId) return null;
@@ -195,11 +193,6 @@ export default class EditEntry extends Component {
         return fieldOptions;        
     }
 
-    buildLogbookPicker()
-    {
-        return this.props.logbooks.map(a => { return (<Picker.Item label={a.name} value={a.logbookId} key={a.logbookId} />) });
-    }  
-
     getFieldName(fieldId)
     {
         return this.props.fields.find(a => a.fieldId === fieldId).name;
@@ -241,7 +234,16 @@ export default class EditEntry extends Component {
             entry = this.props.entries.find(e => e.logbookEntryId === this.state.logbookEntryId);
         }
 
-        entry.logbookId = this.state.selectedLogbookId;
+        var logbookForActivity = this.props.logbooks.find((a) => a.defaultActivityId === this.state.activityId);
+        if (logbookForActivity)
+        {
+            entry.logbookId = logbookForActivity.logbookId;
+        }
+        else
+        {
+            entry.logbookId = '00000000-0000-0000-0000-000000000000';
+
+        }
         entry.activityId = this.state.activityId;
         entry.notes = this.state.notes;
         entry.date = this.state.date;
@@ -260,25 +262,19 @@ export default class EditEntry extends Component {
             entry.syncStatus = "UPDATED";
             this.props.updateEntry(entry);  
         }      
-        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Logbooks', props: { selectedLogbookId: this.state.selectedLogbookId } });  
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Logbooks', props: { selectedActivityId: this.state.activityId } });  
      }
 
      cancelNavigate() {         
-         Reactotron.log(this.props.navigation.state.params)
-        this.props.dispatch({type: 'NAVIGATE_TO', routeName: this.props.navigation.state.params.returnNav, props: { selectedLogbookId: this.state.selectedLogbookId } });  
+        Reactotron.log(this.props.navigation.state.params)
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: this.props.navigation.state.params.returnNav, props: { selectedActivityId: this.state.activityId } });  
      }
 
     render(){
         return <View>
                     <ScrollView>
                     <Header navigation={this.props.navigation} title={this.state.editMode === "Add" ? "Add Logbook Entry" : "Edit Logbook Entry"} />
-                    <View style={{padding:5}}>
-                        <View style={[styles.leftRow, {padding:5}]}>
-                            <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}}>Logbook</Text>
-                            <Picker style={{width:'70%'}} selectedValue={this.state.selectedLogbookId} onValueChange={(itemValue, itemIndex) => { this.setState({selectedLogbookId: itemValue}); this.setDefaultActivity(itemValue); }}>
-                                {this.buildLogbookPicker()}
-                            </Picker>
-                        </View>
+                    <View style={{padding:5}}>                        
                         <View style={[styles.leftRow, {padding:5}]}>
                             <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}}>Activity</Text>
                             <Picker style={{width:'70%'}} selectedValue={this.state.activityId} onValueChange={(itemValue, itemIndex) => this.setState({activityId: itemValue})}>

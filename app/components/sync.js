@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text, Button, ActivityIndicator }  from 'react-native';
+import { View, Text, Button, ActivityIndicator, TouchableOpacity }  from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../containers/header'
@@ -15,6 +15,7 @@ export default class Sync extends Component{
         this.megaCallback = this.megaCallback.bind(this);
         this.getColorForSyncStatus = this.getColorForSyncStatus.bind(this);
         this.getTextForSyncStatus = this.getTextForSyncStatus.bind(this);
+        this.navHome = this.navHome.bind(this);
     }
 
     componentWillMount(){
@@ -62,15 +63,26 @@ export default class Sync extends Component{
         }
     }
 
+    navHome() {
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'Home' });
+    }
+
     getTextForSyncStatus(){
         switch (this.state.syncStatus)
         {
             case "In Progress":
                 return null;
             case "Failed":
-                return "Sorry, there must be a problem.  Try again in a few minutes.";
+                return <Text>Sorry, there must be a problem.  Try again in a few minutes.</Text>;
             case "Complete":
-                return "Great!  Your data is all synced and secure.";
+                return (<View>
+                            <Text style={{marginBottom:50}}>Great!  Your data is all synced and secure.</Text>
+                            <TouchableOpacity style={{height: '30%', margin:20, backgroundColor:'#4682b4', alignItems:'center', justifyContent:'center'}} onPress={() => this.navHome()}>
+                                    <View style={styles.centerRow}>
+                                        <Text style={{fontSize:24, color:'white', fontWeight:'bold'}}>BACK TO HOME</Text>
+                                    </View>
+                            </TouchableOpacity>
+                        </View>);
         }
     }
 
@@ -93,19 +105,23 @@ export default class Sync extends Component{
                     </View> */}
                     {this.props.connectionStatus && this.state.syncStatus !== "Complete" && this.state.syncStatus !== "In Progress" ?
                         <View style={[styles.flexColumn, { margin:5, marginTop:30 }]}>
-                            <Button title="Sync Now" onPress={this.doSync} /> 
+                            <TouchableOpacity onPress={() => this.doSync()} style={{height: '30%', margin:20, backgroundColor:'#4682b4', alignItems:'center', justifyContent:'center'}}>
+                                    <View style={styles.centerRow}>
+                                        <Text style={{fontSize:24, color:'white', fontWeight:'bold'}}>SYNC NOW</Text>
+                                    </View>
+                            </TouchableOpacity>
                         </View> : null}
                     { this.state.syncStatus ?
                     <View style={[styles.flexColumn, { margin:5, marginTop:20 }]}>
                         <View style={[styles.centerRow, {marginTop:5}]}>
-                            <Text style={[this.getColorForSyncStatus(), {fontSize:20}]}>Sync {this.state.syncStatus}</Text>
+                            <Text style={[this.getColorForSyncStatus(), {fontSize:36}]}>Sync {this.state.syncStatus}</Text>
                         </View>
                         {(this.state.syncStatus === "In Progress" ? <View style={styles.centerRow}>
                             <ActivityIndicator />
                         </View> : null)}
                     </View> : null }
                     <View style={[styles.centerRow, { margin:5, marginTop:30 }]}>
-                        <Text>{this.getTextForSyncStatus()}</Text>
+                        {this.getTextForSyncStatus()}
                     </View>
                 </View>);
     }

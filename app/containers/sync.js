@@ -11,6 +11,7 @@ function mapStateToProps(state) { return {
     logbooks: state.loadLogbooks.logbooks, 
 } }
 function mapDispatchToProps(dispatch) { return { 
+    dispatch,
     ping: () => dispatch(ping()), 
     getEntries: (userId, progressCallback) => dispatch(getEntries(userId, progressCallback)), 
     getActivities: (userId, progressCallback) => dispatch(getActivities(userId, progressCallback)), 
