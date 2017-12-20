@@ -54,7 +54,7 @@ export default class Logbooks extends Component {
             }
         if (entries.length === 0)
             return  <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <Text style={{padding:5, paddingTop:20}}>There are no entries in this logbook.</Text>
+                        <Text style={{padding:5, paddingTop:20}}>There are no logbook entries for this activity.</Text>
                     </View>
         let i = 0;
         return entries.sort(this.dateSort).map(a => { return (<EntryItem entry={a} index={i++} key={a.logbookEntryId} forceParentRender={this.forceRender} />) })
@@ -114,15 +114,18 @@ export default class Logbooks extends Component {
                         <Button title="New Entry" color='#4682b4' onPress={() => {this.newEntry()}} />
                     </View>
                     { this.state.hasUnsynced ? <View style={{alignItems:'center', padding:10, paddingTop: 0, paddingBottom:5}}><Text style={{fontSize:10}}>Entries in yellow have not been synced with the server.</Text></View> : null}
-                    <View style={[styles.leftRow, { padding: 5 }]}>
-                        <Text style={{width:'30%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Date</Text>
-                        <Text style={{width:'40%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Location</Text>
-                        <Text style={{width:'25%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Role</Text>
-                    </View>
                     { entries.length === 0 ? <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <Text style={{padding:5, paddingTop:20, fontSize:16}}>There are no entries in this logbook.</Text>
+                        <Text style={{padding:5, paddingTop:20, fontSize:16}}>There are no logbook entries for this activity.</Text>
                     </View> :
-                    <FlatList style={{flex:1}} data={entries} extraData={this.state} renderItem={this.formatEntry} keyExtractor={this.getKey} /> }
+                    <View style={{flex:1}}>
+                        <View style={[styles.leftRow, { padding: 5 }]}>
+                            <Text style={{width:'30%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Date</Text>
+                            <Text style={{width:'40%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Location</Text>
+                            <Text style={{width:'25%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Role</Text>
+                        </View>                    
+                        <FlatList style={{flex:1}} data={entries} extraData={this.state} renderItem={this.formatEntry} keyExtractor={this.getKey} /> 
+                    </View>                    
+                    }
                 </View>
     }
 

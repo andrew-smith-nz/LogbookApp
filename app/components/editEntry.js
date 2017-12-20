@@ -81,8 +81,6 @@ export default class EditEntry extends Component {
 
     getFields()
     {
-        var uuid = require('react-native-uuid');
-
         // check if custom field or picker field (or both?)
         // for custom, just write a text box
         // for picker, create it and call getFieldOptionPickerItems() to populate.
@@ -99,18 +97,18 @@ export default class EditEntry extends Component {
                     // options AND custom text
                     return (
                             <View key={"v0" + field.fieldId}>
-                                <View style={[styles.leftRow, {padding:5}]} key={uuid.v4()}>
-                                        <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}} key={uuid.v4()}>{this.getFieldName(field.fieldId)}</Text>
+                                <View style={[styles.leftRow, {padding:5}]} key={"v1" + field.fieldId}>
+                                        <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}} key={"t" + field.fieldId}>{this.getFieldName(field.fieldId)}</Text>
                                         <Picker style={{width:'70%'}} selectedValue={this.getSelectedFieldValue(field.fieldId)} 
-                                                onValueChange={(itemValue, itemIndex) => this.setSelectedFieldValue(field.fieldId, itemValue)} key={uuid.v4()}>
-                                            <Picker.Item label="Select..." value="" key={uuid.v4()} />
-                                            {fieldOptions.map(o => { return (<Picker.Item label={this.getFieldOptionText(o.fieldOptionId)} value={o.fieldOptionId} key={uuid.v4()} />) })}
-                                            <Picker.Item label="Custom" value="Custom" key={uuid.v4()} />
+                                                onValueChange={(itemValue, itemIndex) => this.setSelectedFieldValue(field.fieldId, itemValue)} key={"p" + field.fieldId}>
+                                            <Picker.Item label="Select..." value="" key={"pselect" + field.fieldId} />
+                                            {fieldOptions.map(o => { return (<Picker.Item label={this.getFieldOptionText(o.fieldOptionId)} value={o.fieldOptionId} key={o.fieldOptionId + field.fieldId} />) })}
+                                            <Picker.Item label="Custom" value="Custom" key={"pcustom" + field.fieldId} />
                                         </Picker>                                    
                                 </View>
                                 { this.getSelectedFieldValue(field.fieldId) === "Custom" ?                                
                                 <View style={[styles.leftRow, {padding:5}]} key={"v" + field.fieldId}>
-                                        <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}} key={"t" + field.fieldId}></Text>
+                                        <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}} key={"t1" + field.fieldId}></Text>
                                         <TextInput  style={[styles.input, {width:'70%', fontSize:14, margin:0}]} 
                                                     underlineColorAndroid='transparent' 
                                                     key={"ti" + field.fieldId} 
@@ -123,12 +121,12 @@ export default class EditEntry extends Component {
                 {
                     // Just options
                     return (
-                            <View style={[styles.leftRow, {padding:5}]} key={uuid.v4()}>
-                                    <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}} key={uuid.v4()}>{this.getFieldName(field.fieldId)}</Text>
+                            <View style={[styles.leftRow, {padding:5}]} key={"v3" + field.fieldId}>
+                                    <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}} key={"t2" + field.fieldId}>{this.getFieldName(field.fieldId)}</Text>
                                     <Picker style={{width:'70%'}} selectedValue={this.getSelectedFieldValue(field.fieldId)} 
-                                            onValueChange={(itemValue, itemIndex) => this.setSelectedFieldValue(field.fieldId, itemValue)} key={uuid.v4()}>
-                                            <Picker.Item label="Select..." value="" key={uuid.v4()} />
-                                        {fieldOptions.map(o => { return (<Picker.Item label={this.getFieldOptionText(o.fieldOptionId)} value={o.fieldOptionId} key={uuid.v4()} />) })}
+                                            onValueChange={(itemValue, itemIndex) => this.setSelectedFieldValue(field.fieldId, itemValue)} key={"p2" + field.fieldId}>
+                                            <Picker.Item label="Select..." value="" key={"pselect" + field.fieldId} />
+                                        {fieldOptions.map(o => { return (<Picker.Item label={this.getFieldOptionText(o.fieldOptionId)} value={o.fieldOptionId} key={o.fieldOptionId + field.fieldId} />) })}
                                     </Picker>   
                             </View>);  
                 }
@@ -137,7 +135,7 @@ export default class EditEntry extends Component {
             {
                 // just custom text
                    return (
-                            <View style={[styles.leftRow, {padding:5}]} key={"v2" + field.fieldId}>
+                            <View style={[styles.leftRow, {padding:5}]} key={"v4" + field.fieldId}>
                                 <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}} key={"t2" + field.FieldId}>{this.getFieldName(field.fieldId)}</Text>
                                 <TextInput  style={[styles.input, {width:'70%', fontSize:14, margin:0}]} 
                                                     underlineColorAndroid='transparent' 
@@ -227,7 +225,6 @@ export default class EditEntry extends Component {
      }
 
      save() {
-        var uuid = require('react-native-uuid');
         let entry = {};
         if (this.state.editMode === "Edit")
         {
@@ -252,7 +249,7 @@ export default class EditEntry extends Component {
         
         if (this.state.editMode === "Add")
         {
-            entry.logbookEntryId = uuid.v4();
+            entry.logbookEntryId = this.guid();
             entry.syncStatus = "NEW";
             this.props.createEntry(entry);  
         }
@@ -319,4 +316,14 @@ export default class EditEntry extends Component {
     // props:   Entry (either with data or empty if it's new)
     //          Mode (add/edit)
     // needs state for activities/fields/options etc.
+
+    guid() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+          s4() + '-' + s4() + s4() + s4();
+      }
 }

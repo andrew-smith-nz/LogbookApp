@@ -7,7 +7,13 @@ import DrawerMenu from '../components/drawerMenu'
 
 import Routes from '../configs/routes'
 
-export const AppNavigator = DrawerNavigator(Routes, { contentComponent: props => <DrawerMenu {...props} /> });
+export const AppNavigator = DrawerNavigator(Routes, 
+  { 
+    contentComponent: props => <DrawerMenu {...props} />,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle'
+  });
 
 const AppWithNavigationState = ({ dispatch, nav }) => (
   <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
