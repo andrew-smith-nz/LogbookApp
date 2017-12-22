@@ -76,27 +76,21 @@ export default class Home extends Component {
             everSynced = false;
             sinceSyncedText = "You have not synced your data since installing the app."
         }
-        return  <View>
+        return  <View style={[styles.mainPanel, {flex:1, flexDirection:'column'}]}>
                     <Header navigation={this.props.navigation} title="Home" />
-                    <View style={[styles.flexColumn, {margin:10, height:'20%', backgroundColor:'#dae7f1'}]} >
+                    <View style={[styles.flexColumn, styles.viewBox, {flex:2}]} >
                         <TouchableOpacity onPress={() => this.props.dispatch({type: 'NAVIGATE_TO', routeName:'Logbooks'})}>
-                            <View style={[styles.centerRow, {marginTop:20}]}>
-                                <Text style={{fontSize:18}}>Logbook Summary</Text>
-                            </View>
-                            <View style={[styles.centerRow, {marginTop:20}]}>
-                                <Text>You have {this.props.entries.length} entr{this.props.entries.length === 1 ? 'y': 'ies'} over {this.props.logbooks.length} activit{this.props.logbooks.length === 1 ? "y" : "ies"}.</Text>
+                            <View style={[styles.centerRow, {flexDirection:"column"}]}>
+                                <Text style={{fontSize:18, marginBottom:20, fontWeight:'bold'}}>Logbook Summary</Text>
+                                <Text>You have {this.props.entries.length} entr{this.props.entries.length === 1 ? 'y': 'ies'} across {this.props.logbooks.length} activit{this.props.logbooks.length === 1 ? "y" : "ies"}.</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={[styles.flexColumn, {margin:10, height:'35%', backgroundColor:'#dae7f1'}]} >
+                    <View style={[styles.flexColumn, styles.viewBox, {flex:2}]} >
                         <TouchableOpacity onPress={() => this.props.dispatch({type: 'NAVIGATE_TO', routeName:'Sync'})}>
-                            <View style={[styles.centerRow, {marginTop:20}]}>
-                                <Text style={{fontSize:18}}>Sync Summary</Text>
-                            </View>
-                            <View style={[styles.centerRow, {marginTop:20}]}>
-                                <Text>You have {unsyncedCount} unsynced entr{unsyncedCount === 1 ? 'y': 'ies'}.</Text>
-                            </View>
-                            <View style={[styles.centerRow, {margin:10, justifyContent:'center'}]}>
+                            <View style={[styles.centerRow, {flexDirection:"column"}]}>
+                                <Text style={{fontSize:18, marginBottom:20, fontWeight:'bold'}}>Sync Summary</Text>
+                                <Text style={{marginBottom:20}}>You have {unsyncedCount} unsynced entr{unsyncedCount === 1 ? 'y': 'ies'}.</Text>
                                 <Text style={[syncNeeded ? { color:'red' } : {color:'green'}, {textAlign:'center'}]}>
                                     {everSynced ? "Your last sync was " + sinceSyncedText + " ago." : "You have not synced your data since installing the app."}
                                 </Text>
@@ -109,8 +103,8 @@ export default class Home extends Component {
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity onPress={() => this.newEntry()}>
-                        <View style={{height: '30%', margin:20, backgroundColor:'#4682b4', alignItems:'center', justifyContent:'center'}}>
+                    <TouchableOpacity style={styles.button} onPress={() => this.newEntry()}>
+                        <View>
                             <View style={styles.centerRow}>
                                 <Text style={{fontSize:24, color:'white', fontWeight:'bold'}}>ADD ENTRY</Text>
                             </View>

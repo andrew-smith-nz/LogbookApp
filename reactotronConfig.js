@@ -1,6 +1,6 @@
-import Reactotron from 'reactotron-react-native'
+import Reactotron, { asyncStorage } from 'reactotron-react-native'
 
 Reactotron
-  .configure() // controls connection & communication settings
-  .useReactNative() // add all built-in react native plugins
+  .configure({ host: '192.168.0.2' }) // controls connection & communication settings
+  .use(asyncStorage())
   .connect() // let's connect!

@@ -1,9 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
+import './reactotronConfig';
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -20,7 +15,6 @@ import thunk from 'redux-thunk';
 import Routes from "./app/configs/routes";
 import { connect } from 'react-redux';
 import {persistStore, autoRehydrate} from 'redux-persist'
-import './reactotronConfig';
 import Reactotron from 'reactotron-react-native'
 
 import { DrawerNavigator, addNavigationHelpers } from "react-navigation";
@@ -35,7 +29,7 @@ export default class Logbook extends Component {
     super(props);
         this.state = { rehydrated: false, showSplash: true }
         Reactotron.configure({ host: '192.168.0.6' }).connect()
-        setTimeout(()=>{ this.setState({showSplash: false}); }, 1000);          
+        setTimeout(()=>{ this.setState({showSplash: false}); }, 100);          
     }
   componentWillMount(){
     const persistor = persistStore(store, {storage: AsyncStorage, blacklist: ['ping', 'isLoggingIn', 'navReducer']}, () => { this.setState({ rehydrated: true })});

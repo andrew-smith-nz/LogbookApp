@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, TextInput, ScrollView, Button, BackHandler} from 'react-native';
+import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, TextInput, ScrollView, Button, BackHandler, Alert} from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Header from '../containers/header'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -23,7 +23,6 @@ export default class EditEntry extends Component {
                         fieldCustomValues: [], 
                         editMode: 'Add',
                         date: new Date()};
-    
         if (this.props.navigation.state.params.entry.logbookEntryId)
         {
             this.loadEditFromEntry(this.props.navigation.state.params.entry);
@@ -86,9 +85,12 @@ export default class EditEntry extends Component {
         // for picker, create it and call getFieldOptionPickerItems() to populate.
         // if both, picker on top and custom textbox underneath, make sure that there's a 'custom' option in picker and it gets selecfted automatically if custom text box is populated.
         //      likewise disable (do not clear, but do not save either) custom text box if any option other than 'custom' is selected.
-
+        var activityId = this.state.activityId;
+        if (!activityId)
+            activityId = this.props.activities[0].activityId;
+        
         return this.props.fields.map(field => {
-            if (field.activityId !== this.state.activityId) return null;
+            if (field.activityId !== activityId) return null;
             let fieldOptions = this.getFieldOptions(field.fieldId);
             if (fieldOptions.length > 0)
             {
@@ -217,11 +219,6 @@ export default class EditEntry extends Component {
     getCustomFieldText (fieldId) {
         var a = this.state.fieldCustomValues.find(x => x.fieldId === fieldId);
         return a ? a.customValue : "";
-     }
-
-     setDefaultActivity(logbookId){
-         let logbook = this.props.logbooks.find((a) => a.logbookId === logbookId);
-         this.setState({activityId: logbook.defaultActivityId});
      }
 
      save() {
