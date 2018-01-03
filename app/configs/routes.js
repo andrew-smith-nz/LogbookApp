@@ -5,16 +5,18 @@ import Sync from "../containers/sync";
 import Activities from "../containers/activities";
 import EditEntry from "../containers/editEntry";
 import Reporting from "../containers/reporting";
+import TrialLimitReached from "../containers/trialLimitReached";
 
 const Routes = {
     // the first item is the default 'home' screen
-    Reports: { screen: Reporting },
     Home: { screen: Home },
-    EditEntry: { screen: EditEntry },
     Logbooks: { screen: Logbooks },
-    Activities: { screen: Activities },
+    EditEntry: { screen: EditEntry },
     Sync: { screen: Sync },
+    Reports: { screen: Reporting },
+    Activities: { screen: Activities },
     Login: { screen: Login },
+    TrialLimitReached: { screen: TrialLimitReached },
 };
 
 export default Routes;

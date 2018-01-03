@@ -16,11 +16,12 @@ export default class DrawerMenu extends Component{
             {
                 if (this.props.items[i].routeName !== "Login"
                 && this.props.items[i].routeName !== "EditEntry"
+                && this.props.items[i].routeName !== "TrialLimitReached"
                 && this.props.items[i].routeName !== "Activities")   //TODO: Re-instate
                     items.push(this.props.items[i]);
             }
             
-        return (<View style={styles.flexColumn}>
+        return (<View style={[styles.flexColumn, styles.backgroundBackgroundColor, {flex:1}]}>
                     <View style={[styles.centerRow, { alignItems: 'center', marginBottom:20}]}>
                         <Image source={require('../../img/logo_large.jpg')} style={{height:70, width: 128, padding:10}} />
                     </View>

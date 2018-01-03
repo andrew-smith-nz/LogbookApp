@@ -16,16 +16,16 @@ export default class Header extends Component {
     render() {
       return (
           <View>
-            <View style={[styles.leftRow, { alignItems: 'center', justifyContent:'space-between', paddingLeft:10, paddingTop: 5, paddingBottom: 5, backgroundColor:'#4682b4'  }]}>
+            <View style={[styles.leftRow, styles.primaryBackgroundColor, { alignItems: 'center', justifyContent:'space-between', paddingLeft:10, paddingTop: 5, paddingBottom: 5 }]}>
                 <View style={styles.leftRow}>
                     <TouchableOpacity onPress={this.goToLogin.bind(this)}>
                             <Icon name="bars" size={30} color='#ffffff' />
                     </TouchableOpacity>
-                    <Text style={[styles.titleText, styles.steelBlue, {paddingLeft:20, color:'#ffffff'}]}>{this.props.title}</Text>   
+                    <Text style={[styles.titleText, styles.primaryColor, {paddingLeft:20, color:'#ffffff'}]}>{this.props.title}</Text>   
                 </View>
-                <View style={[styles.rightRow, {padding:5}]}>
+                <TouchableOpacity style={[styles.rightRow, {padding:5}]} onPress={() => this.props.navigation.dispatch({type: 'NAVIGATE_TO', routeName:'Home'})}>
                     <Image source={require('../../img/logo_only.png')} style={{height:28, width: 60 }} />
-                </View>
+                </TouchableOpacity>
             </View>
             <View style={[styles.divider]} />
         </View>

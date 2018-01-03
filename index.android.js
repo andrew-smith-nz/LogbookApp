@@ -14,8 +14,9 @@ import rootReducer from './app/reducers/index';
 import thunk from 'redux-thunk';
 import Routes from "./app/configs/routes";
 import { connect } from 'react-redux';
-import {persistStore, autoRehydrate} from 'redux-persist'
-import Reactotron from 'reactotron-react-native'
+import {persistStore, autoRehydrate} from 'redux-persist';
+import Reactotron from 'reactotron-react-native';
+import styles from './style/stylesheet.js';
 
 import { DrawerNavigator, addNavigationHelpers } from "react-navigation";
 
@@ -38,12 +39,12 @@ export default class Logbook extends Component {
   
   render() {
     if(this.state.showSplash){
-      return  <View style={{width:'100%', height:'100%', flexDirection:'column'}}>
+      return  <View style={[styles.backgroundBackgroundColor, {width:'100%', height:'100%', flexDirection:'column'}]}>
                 <View style={{width:'100%', height:'70%', alignItems:'center', justifyContent:'center'}}>
                   <Image source={require("./img/logo_large.png")} style={{width:'80%', height:'80%', resizeMode:'contain'}} />
                 </View>
                 <View style={{width:'100%', height:'30%', alignItems:'center', justifyContent:'center'}}>
-                  <Text>[Add Copyright Notice]</Text>
+                  <Text>Copyright © 2017 Full Stack Development Ltd.</Text>
                 </View>
               </View>
     }
@@ -54,9 +55,5 @@ export default class Logbook extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-
-});
 
 AppRegistry.registerComponent('Logbook', () => Logbook);

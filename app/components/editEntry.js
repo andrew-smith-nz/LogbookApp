@@ -37,6 +37,13 @@ export default class EditEntry extends Component {
         }
     }
 
+    componentWillMount() {        
+        if (!this.props.navigation.state.params.entry.logbookEntryId && this.props.entries.length >= 10 && this.props.isTrial)
+        {
+            this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'TrialLimitReached', props: { returnNav: this.props.navigation.state.params.returnNav } });
+        }
+    }
+
     componentDidMount() {
         BackHandler.addEventListener('backPress', () => {
             this.cancelNavigate();
@@ -101,12 +108,15 @@ export default class EditEntry extends Component {
                             <View key={"v0" + field.fieldId}>
                                 <View style={[styles.leftRow, {padding:5}]} key={"v1" + field.fieldId}>
                                         <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}} key={"t" + field.fieldId}>{this.getFieldName(field.fieldId)}</Text>
-                                        <Picker style={{width:'70%'}} selectedValue={this.getSelectedFieldValue(field.fieldId)} 
-                                                onValueChange={(itemValue, itemIndex) => this.setSelectedFieldValue(field.fieldId, itemValue)} key={"p" + field.fieldId}>
-                                            <Picker.Item label="Select..." value="" key={"pselect" + field.fieldId} />
-                                            {fieldOptions.map(o => { return (<Picker.Item label={this.getFieldOptionText(o.fieldOptionId)} value={o.fieldOptionId} key={o.fieldOptionId + field.fieldId} />) })}
-                                            <Picker.Item label="Custom" value="Custom" key={"pcustom" + field.fieldId} />
-                                        </Picker>                                    
+                                        <View style={[styles.picker, {width:'70%'}]}>
+                                            <Picker style={[{width:'100%'}]} 
+                                                    selectedValue={this.getSelectedFieldValue(field.fieldId)} 
+                                                    onValueChange={(itemValue, itemIndex) => this.setSelectedFieldValue(field.fieldId, itemValue)} key={"p" + field.fieldId}>
+                                                <Picker.Item label="Select..." value="" key={"pselect" + field.fieldId} />
+                                                {fieldOptions.map(o => { return (<Picker.Item label={this.getFieldOptionText(o.fieldOptionId)} value={o.fieldOptionId} key={o.fieldOptionId + field.fieldId} />) })}
+                                                <Picker.Item label="Custom" value="Custom" key={"pcustom" + field.fieldId} />
+                                            </Picker>         
+                                        </View>                           
                                 </View>
                                 { this.getSelectedFieldValue(field.fieldId) === "Custom" ?                                
                                 <View style={[styles.leftRow, {padding:5}]} key={"v" + field.fieldId}>
@@ -260,50 +270,60 @@ export default class EditEntry extends Component {
      }
 
      cancelNavigate() {         
-        Reactotron.log(this.props.navigation.state.params)
         this.props.dispatch({type: 'NAVIGATE_TO', routeName: this.props.navigation.state.params.returnNav, props: { selectedActivityId: this.state.activityId } });  
      }
 
     render(){
-        return <View>
+        return <View style={styles.backgroundBackgroundColor}>
                     <ScrollView>
                     <Header navigation={this.props.navigation} title={this.state.editMode === "Add" ? "Add Logbook Entry" : "Edit Logbook Entry"} />
                     <View style={{padding:5}}>                        
                         <View style={[styles.leftRow, {padding:5}]}>
-                            <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}}>Activity</Text>
-                            <Picker style={{width:'70%'}} selectedValue={this.state.activityId} onValueChange={(itemValue, itemIndex) => this.setState({activityId: itemValue})}>
-                                {this.getActivityPickerItems()}
-                            </Picker>
+                            <Text style={[styles.labelText, {width:'30%'}]}>Activity</Text>
+                            <View style={[styles.picker, {width:'70%'}]}>
+                                <Picker style={{width:'100%'}} selectedValue={this.state.activityId} onValueChange={(itemValue, itemIndex) => this.setState({activityId: itemValue})}>
+                                    {this.getActivityPickerItems()}
+                                </Picker>
+                            </View>
                         </View>
                         <View style={[styles.leftRow, {padding:5, alignItems:'flex-start'}]}>
-                            <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}}>Notes</Text>
-                            <TextInput style={[styles.input, {width:'70%', height:80, fontSize:14, margin:0, textAlignVertical: 'top'}]} underlineColorAndroid='transparent' multiline
+                            <Text style={[styles.labelText, {width:'30%'}]}>Notes</Text>
+                            <TextInput style={[styles.input, styles.valueText, {width:'70%', height:80, margin:0, textAlignVertical: 'top'}]} underlineColorAndroid='transparent' multiline
                              onChangeText={(value) => this.setState({notes: value})} value={this.state.notes}  />
                         </View>
                         <View style={[styles.leftRow, {padding:5}]}>
-                            <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}}>Date</Text>
+                            <Text style={[styles.labelText, {width:'30%'}]}>Date</Text>
                             <DatePicker
-                                style={{width: '70%'}}
+                                style={{width: '70%', backgroundColor:'white'}}
                                 date={this.state.date}
                                 showIcon={false}
                                 mode="date"
                                 format="D MMMM YYYY"
                                 confirmBtnText="OK"
                                 cancelBtnText="Cancel"
-                                customStyles={{
-                                        dateInput: [styles.leftRow, {paddingLeft:5, borderColor: '#cccccc'}]
-                                }}
+                                customStyles={{ dateInput: [styles.leftRow, {paddingLeft:5, borderColor: '#cccccc'}] }}
                                 onDateChange={(date) => {this.setState({date: date})}}
                             />
                         </View>
                         <View>
                             {this.getFields()}
                         </View>
-                        <View style={{padding:5}}>
-                            <Button title={this.state.editMode === "Add"? "Add" : "Save"} color='#4682b4' onPress={() => {this.save()}} />
-                        </View>
-                        <View style={{padding:5}}>
-                            <Button title="Cancel" color='#4682b4' onPress={() => { this.cancelNavigate() }} />
+                        <View style={styles.flexRow}>                        
+                            <TouchableOpacity style={[styles.button, {flex:1}]} onPress={() => this.save()}>
+                                <View>
+                                    <View style={styles.centerRow}>
+                                        <Text style={styles.buttonText}>{this.state.editMode === "Add"? "ADD" : "UPDATE"}</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                            
+                            <TouchableOpacity style={[styles.buttonOutline, {flex:1}]} onPress={() => this.cancelNavigate()}>
+                                <View>
+                                    <View style={styles.centerRow}>
+                                        <Text style={styles.buttonOutlineText}>CANCEL</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     </ScrollView>

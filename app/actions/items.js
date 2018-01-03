@@ -1,10 +1,12 @@
 import Reactotron from 'reactotron-react-native'
+import { Alert } from 'react-native'
 
-export function loginResult(bool, userId) {
+export function loginResult(bool, userId, isTrial) {
     if (bool)
         return {
             type: 'LOGIN_SUCCESS',
-            userId: userId
+            userId: userId,
+            isTrial: false
         };
     else
         return {
@@ -225,7 +227,7 @@ export function updateLastSynced()
 
 export function megaSync(userId, entries, logbooks, callback)
 {
-    Reactotron.log(userId);
+    //Reactotron.log(userId);
     Reactotron.log(JSON.stringify({entries: entries.filter(e => e.syncStatus !== "SYNCED"), logbooks: logbooks.filter(l => l.syncStatus !== "SYNCED")}));
      return (dispatch) => {
     var url = 'http://www.theoutdoorlogbook.com/api/Upload/' + userId;
@@ -248,12 +250,13 @@ export function megaSync(userId, entries, logbooks, callback)
                 dispatch(loadFieldOptions(data.fieldOptions));
                 dispatch(updateLastSynced());
             }
-            callback(data);
+            Reactotron.log('callback')
+            callback(data.ok);
       })
       .catch(function(error) {
                 Reactotron.log("Error in megaSync:");
                 Reactotron.log(error);
-                callback({ ok: false, errors: ["Something went wrong"] });
+                callback({ ok: false, errors: [ error ] });
             });
     }
 }

@@ -6,6 +6,7 @@ import { createEntry, updateEntry } from '../actions/items';
 
 function mapStateToProps(state) { return { 
     userId: state.login.userId, 
+    isTrial: state.login.isTrial, 
     logbooks: state.loadLogbooks.logbooks,
     activities: state.loadActivities.activities, 
     fields: state.loadFields.fields, 

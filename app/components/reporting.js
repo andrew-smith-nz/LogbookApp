@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text, Button, ActivityIndicator, TouchableOpacity, Picker, Alert }  from 'react-native';
+import { View, Text, Button, ActivityIndicator, TouchableOpacity, Picker, Alert, BackHandler }  from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../containers/header'
@@ -12,6 +12,7 @@ export default class Reporting extends Component{
     constructor(props) {
         super(props);
         this.exportReport = this.exportReport.bind(this);
+        this.goBack = this.goBack.bind(this);
         this.state = { 
             selectedFormat:"PDF", 
             selectedActivity:this.props.activities[0].activityId,
@@ -24,6 +25,21 @@ export default class Reporting extends Component{
 
     componentWillMount(){
          this.props.ping();        
+    }    
+
+    componentDidMount()
+    {        
+        BackHandler.addEventListener('hardwareBackPress', this.goBack);
+    }
+
+    componentWillUnmount(){
+        
+        BackHandler.removeEventListener('hardwareBackPress', this.goBack);
+    }
+
+    goBack(){
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName:'Home'});
+        return true;
     }
 
     static navigationOptions = {
@@ -101,11 +117,11 @@ export default class Reporting extends Component{
     }
 
     render(){
-        return  (<View style={styles.flexColumn}>
+        return  (<View style={[styles.flexColumn, styles.backgroundBackgroundColor, {flex:1}]}>
                     <Header navigation={this.props.navigation} title="Export Reports" />
                     <View style={[styles.flexColumn, styles.divider, { margin:5, paddingBottom:10, alignItems:'center' }]}>
                         <Text style={styles.centeredTextMedium}>
-                            You can export your reports in PDF or CSV (Excel) format, and they will delivered via email.  Exporting reports requires an internet connection ({this.displayConnectionStatus(this.props.connectionStatus)}).
+                            You can export your reports in PDF or Excel format, and they will be delivered via email.  Exporting reports requires an internet connection.
                         </Text>
                     </View>
                     <View style={[styles.leftRow, styles.wideMargin]}>
@@ -146,6 +162,18 @@ export default class Reporting extends Component{
                                         <Text style={{fontSize:24, color:'white', fontWeight:'bold'}}>EXPORT</Text>
                                     </View>
                             </TouchableOpacity>
+                        </View> : null}
+                    {this.props.connectionStatus === undefined ?
+                        <View style={[styles.flexColumn, { margin:5, marginTop:30 }]}>
+                            <View style={styles.centerRow}>
+                                <Text style={styles.boldText18}>Checking Connection Status...</Text>
+                            </View>
+                        </View> : null}
+                    {this.props.connectionStatus == false ?
+                        <View style={[styles.flexColumn, { margin:5, marginTop:30 }]}>
+                            <View style={styles.centerRow}>
+                                <Text style={[styles.boldText18, {color:'red'}]}>No Internet Connection</Text>
+                            </View>
                         </View> : null}
                     { this.state.exportStatus ?
                     <View style={[styles.flexColumn, { margin:5, marginTop:20 }]}>

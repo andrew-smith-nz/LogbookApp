@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, FlatList, Button} from 'react-native';
+import {AppRegistry, StyleSheet, View, Text, TouchableOpacity, Picker, FlatList, Button, BackHandler, Alert} from 'react-native';
 import styles from '../../style/stylesheet.js'
 import Header from '../containers/header'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,6 +14,7 @@ export default class Logbooks extends Component {
         this.setSelectedActivity = this.setSelectedActivity.bind(this)
         this.forceRender = this.forceRender.bind(this);
         this.formatEntry = this.formatEntry.bind(this);
+        this.goBack = this.goBack.bind(this);
 
         let selectedActivityId = this.props.activities[0].activityId;
         if (this.props.navigation.state.params && this.props.navigation.state.params.selectedActivityId)
@@ -29,6 +30,21 @@ export default class Logbooks extends Component {
             <Icon name="book" size={24} color='#004A7F' />
             ),
     };
+
+    componentDidMount()
+    {        
+        BackHandler.addEventListener('hardwareBackPress', this.goBack);
+    }
+
+    componentWillUnmount(){
+        
+        BackHandler.removeEventListener('hardwareBackPress', this.goBack);
+    }
+
+    goBack(){
+        this.props.dispatch({type: 'NAVIGATE_TO', routeName:'Home'});
+        return true;
+    }
 
     componentWillMount()
     {
@@ -101,30 +117,44 @@ export default class Logbooks extends Component {
             }
         entries = entries.sort(this.dateSort);
         
-        return  <View style={{flexDirection:'column', height:'100%'}}>
+        return  <View style={[styles.mainPanel, styles.backgroundBackgroundColor]}>
                     <Header navigation={this.props.navigation} title="My Logbooks" />
-                    <View style={[styles.leftRow, {margin:5, marginTop:10, marginBottom:10}]}>
+                    <View style={[styles.sideMargins, styles.leftRow, { marginBottom:10 }]}>
                         <Text style={{fontSize:16, paddingRight:10}}>Activity: </Text>
-                        <Picker style={{flex:1, height:30}} selectedValue={this.state.selectedActivityId} onValueChange={(itemValue, itemIndex) => this.setSelectedActivity(itemValue)}>
-                            {this.buildActivityPicker()}
-                        </Picker>
+                        <View style={[styles.picker, {flex:1}]}>
+                            <Picker selectedValue={this.state.selectedActivityId} onValueChange={(itemValue, itemIndex) => this.setSelectedActivity(itemValue)}>
+                                {this.buildActivityPicker()}
+                            </Picker>
+                        </View>
                     </View>
-                    <View style={styles.divider} />
-                    <View style={{padding:10}}>
-                        <Button title="New Entry" color='#4682b4' onPress={() => {this.newEntry()}} />
-                    </View>
-                    { this.state.hasUnsynced ? <View style={{alignItems:'center', padding:10, paddingTop: 0, paddingBottom:5}}><Text style={{fontSize:10}}>Entries in yellow have not been synced with the server.</Text></View> : null}
-                    { entries.length === 0 ? <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <Text style={{padding:5, paddingTop:20, fontSize:16}}>There are no logbook entries for this activity.</Text>
-                    </View> :
-                    <View style={{flex:1}}>
-                        <View style={[styles.leftRow, { padding: 5 }]}>
-                            <Text style={{width:'30%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Date</Text>
-                            <Text style={{width:'40%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Location</Text>
-                            <Text style={{width:'25%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Role</Text>
+                    <View style={styles.horizontalLine} />
+                    
+                    <TouchableOpacity style={styles.button} onPress={() => this.newEntry()}>
+                        <View>
+                            <View style={styles.centerRow}>
+                                <Text style={styles.buttonText}>NEW ENTRY</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+
+                    { this.state.hasUnsynced ? 
+                        <View style={styles.centerRow}>
+                            <Text style={[styles.smallText, {marginBottom:10}]}>Entries in yellow have not been synced with the server.</Text>
+                        </View> : null}
+
+                    { entries.length === 0 ? 
+                        <View style={[styles.centerRow, {flex:2}]}>
+                            <Text style={[styles.centeredTextMedium, styles.bold]}>There are no logbook entries for this activity.</Text>
+                        </View> 
+                    :
+                        <View style={[styles.sideMargins, styles.border, {flex:1, padding:5, marginBottom:5, backgroundColor:'white'}]}>
+                            <View style={[styles.leftRow, { padding: 5 }]}>
+                                <Text style={{width:'30%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Date</Text>
+                                <Text style={{width:'40%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Location</Text>
+                                <Text style={{width:'25%', fontSize:14, fontWeight:'bold', textDecorationLine:'underline'}}>Role</Text>
+                            </View>                    
+                            <FlatList style={{flex:1}} data={entries} extraData={this.state} renderItem={this.formatEntry} keyExtractor={this.getKey} /> 
                         </View>                    
-                        <FlatList style={{flex:1}} data={entries} extraData={this.state} renderItem={this.formatEntry} keyExtractor={this.getKey} /> 
-                    </View>                    
                     }
                 </View>
     }

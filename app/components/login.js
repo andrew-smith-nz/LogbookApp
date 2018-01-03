@@ -22,7 +22,7 @@ export default class Login extends Component {
 
     render() {     
     return (
-      <ScrollView style={[styles.flexColumn, styles.container]}>
+      <ScrollView style={[styles.flexColumn, styles.container, styles.backgroundBackgroundColor]}>
         <View style={[styles.centerRow, {paddingBottom:20}]}>
             <Image source={require('../../img/logo_large.jpg')} style={{ height:128, width:256 }} />
         </View>

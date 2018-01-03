@@ -75,15 +75,15 @@ export default class EntryItem extends Component {
      }
 
     expandedRow(){  
-        let orderedFields = this.props.entry.selectedFieldOptions.map( (ss, i) => {
+        let orderedFields = this.props.entry.selectedFieldOptions.filter(s => this.getFieldOptionText(s.fieldOptionId) != 'Custom').map( (ss, i) => {
                     return { sortOrder: this.getFieldSortOrder(ss.fieldId), jsx: <View key={"vvv" + i} style={styles.leftRow}>
-                                <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
-                                <Text style={{width:'60%'}} key={'ft' + i}>{this.getFieldOptionText(ss.fieldOptionId)}</Text>
+                                <Text style={[styles.labelText, {width:'40%'}]} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
+                                <Text style={[styles.valueText, {width:'60%'}]} key={'ft' + i}>{this.getFieldOptionText(ss.fieldOptionId)}</Text>
                             </View> }});
         orderedFields = orderedFields.concat(this.props.entry.fieldCustomValues.map( (ss, i) => {
                     return { sortOrder: this.getFieldSortOrder(ss.fieldId), jsx: <View key={"vvvv" + i} style={styles.leftRow}>
-                                <Text style={{width:'40%', fontWeight:'bold'}} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
-                                <Text style={{width:'60%'}} key={'ft' + i}>{ss.customValue}</Text>
+                                <Text style={[styles.labelText, {width:'40%'}]} key={'fn' + i}>{this.getFieldName(ss.fieldId)}</Text>
+                                <Text style={[styles.valueText, {width:'60%'}]} key={'ft' + i}>{ss.customValue}</Text>
                             </View> }}));
 
         return (
@@ -91,11 +91,11 @@ export default class EntryItem extends Component {
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                     <Text style={{fontStyle:'italic', paddingBottom:10}}>{this.props.entry.notes}</Text>
                     <View style={styles.centerRow}>
-                        <TouchableOpacity style={{width:30}} onPress={() => this.goToEdit()}>
-                            <Icon name="pencil-square-o" size={20} color="#000000" />
+                        <TouchableOpacity style={{width:50}} onPress={() => this.goToEdit()}>
+                            <Icon name="pencil-square-o" size={30} color="#000000" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width:30}} onPress={() => { this.confirmDelete()}}>
-                            <Icon name="trash" size={20} color="#000000" />
+                        <TouchableOpacity style={{width:50}} onPress={() => { this.confirmDelete()}}>
+                            <Icon name="trash" size={30} color="#000000" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -111,7 +111,7 @@ export default class EntryItem extends Component {
 
     goToEdit()
     {
-         this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: this.props.entry }, returnNav: 'Logbooks' });
+         this.props.dispatch({type: 'NAVIGATE_TO', routeName: 'EditEntry', props: { entry: this.props.entry, returnNav: 'Logbooks' }});
     }
 
     confirmDelete() {
@@ -144,10 +144,10 @@ export default class EntryItem extends Component {
             <View style={{paddingTop:5, paddingBottom:5, backgroundColor:this.getAlternatingRowColor()}}>
                 <TouchableOpacity onPress={() => this.toggleExpand()}>
                     <View style={[styles.leftRow, { padding: 5 }]}>
-                        <Text style={{width:'30%', fontSize:14, fontWeight:'bold'}}>{this.formatDate(this.props.entry.date)}</Text>
-                        <Text style={{width:'40%', fontSize:14, fontWeight:'bold'}}>{this.constructLocationText()}</Text>
-                        <Text style={{width:'25%', fontSize:14, fontWeight:'bold'}}>{this.constructRoleText()}</Text>
-                        <Icon name={this.state.expanded ? "chevron-up" : "chevron-down"} size={14} color="#000000" style={{marginRight:5}} />
+                        <Text style={[styles.labelText, {width:'30%'}]}>{this.formatDate(this.props.entry.date)}</Text>
+                        <Text style={[styles.labelText, {width:'40%'}]}>{this.constructLocationText()}</Text>
+                        <Text style={[styles.labelText, {width:'25%'}]}>{this.constructRoleText()}</Text>
+                        <Icon name={this.state.expanded ? "compress" : "expand"} size={20} color="#000000" style={{marginRight:5}} />
                     </View>
                 </TouchableOpacity>
                 {(this.state.expanded) ? this.expandedRow() : null}
